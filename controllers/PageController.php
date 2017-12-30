@@ -4,7 +4,7 @@
 
         
         public function index() {
-            require 'views/home.php';
+            require 'views/page/home.php';
         }
 
         public function new() {
