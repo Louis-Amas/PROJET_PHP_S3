@@ -1,5 +1,6 @@
 <?php
     require 'models/User.php';
+    require_once 'util.php';
     require_once 'Controller.php';
     class UserController extends Controller {
 
@@ -7,6 +8,31 @@
             $tab = User::findAll();
             $path = '?controller=user&action=show&id=';
             require 'views/user/index.php';
+        }
+
+        public function loginPage() {
+            require 'views/user/loginPage.php';
+        }
+
+        public function login() {
+            $username = filter_input(INPUT_POST, 'username');
+            $password = filter_input(INPUT_POST, 'password');
+            $user = User::findByUsername($username);
+            if ($user == null) {
+                add_error('Wrong username');
+                self::loginPage();
+            }
+            else {
+                if ($user->verifyPassword($password)) {
+                    $_SESSION['USER_ID'] = $user->getId();
+                    add_success('Welcome');
+                    redirect_to('/');
+                }
+                else {
+                    add_error('Wrong password');
+                    self::loginPage();
+                }
+            }
         }
 
         public function new() {

@@ -1,10 +1,13 @@
 <?php
+
     require 'controllers/UserController.php';
     require 'controllers/PageController.php';
-
+    require_once 'util.php';
+    $lang = load_lang('langs/lang_EN.json');
     $controller = filter_input(INPUT_GET, 'controller');
+    $action     = filter_input(INPUT_GET, 'action');
     $page = NULL;
- 
+
     switch ($controller) {
         case "pages":
             $page = new PageController();
@@ -13,8 +16,12 @@
 
         case "user":
             $page = new UserController();
-            $action     = filter_input(INPUT_GET, 'action');
-
+            if ($action == 'loginPage') {
+                $page->loginPage();
+            }
+            if ($action == 'login') {
+                $page->login();
+            }
             break;
         default:
             $page = new PageController();

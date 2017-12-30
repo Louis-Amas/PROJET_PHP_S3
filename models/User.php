@@ -21,11 +21,11 @@
                 $this->password    = $result['PASSWORD'];      
             }
         }
-        public function verifyPassword($password, $salt) {
-                if ($user->password == hash('sha256', $password . $salt ))
+        public function verifyPassword($password) {
+                if ($user->password == hash('sha256', $password . $user->password ))
                     return true;
                 return false;
-            }
+        }
 
         public function getUsername() {
             return $this->username;
