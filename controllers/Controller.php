@@ -1,5 +1,6 @@
 <?php
     abstract class Controller {
+
         //Affiche tous la bases de données du modèle associé
         abstract protected function index();
         //Affiche la page de création du modèle associé

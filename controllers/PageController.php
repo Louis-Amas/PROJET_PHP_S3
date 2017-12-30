@@ -2,6 +2,7 @@
     require_once 'Controller.php';
     class PageController extends Controller {
 
+        
         public function index() {
             require 'views/home.php';
         }
