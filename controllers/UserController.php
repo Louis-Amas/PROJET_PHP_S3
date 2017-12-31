@@ -2,11 +2,14 @@
     require 'models/User.php';
     require_once 'util.php';
     require_once 'Controller.php';
+
     class UserController extends Controller {
+
+        public static $path = '/?controller=user&action=';
 
         public function index() {
             $tab = User::findAll();
-            $path = '?controller=user&action=show&id=';
+            $path = $this::$path . 'show&id=';
             require 'views/user/index.php';
         }
 
@@ -19,24 +22,24 @@
             $password = filter_input(INPUT_POST, 'password');
             $user = User::findByUsername($username);
             if ($user == null) {
-                add_error('Wrong username');
+                add_alert('danger','Wrong username');
                 self::loginPage();
             }
             else {
                 if ($user->verifyPassword($password)) {
                     $_SESSION['USER_ID'] = $user->getId();
-                    add_success('Welcome');
+                    add_alert('success', 'Welcome');
                     redirect_to('/');
                 }
                 else {
-                    add_error('Wrong password');
+                    add_alert('danger', 'Wrong password');
                     self::loginPage();
                 }
             }
         }
 
         public function new() {
-            $path = '?controller=user&action=create';
+            $path = $this::$path . 'create';
             require 'views/user/new.php';
         }
 
@@ -58,11 +61,17 @@
         }
 
         public function create() {
+            global $lang;
             $user = new User($_POST, 1);
-            if (User::insert($user))
-                echo 'yes';
-            else
-                self::signin();
+            if (User::insert($user)) {
+                add_alert('success', $lang['HAPPYINSCRIPTION']);
+                redirect_to('/');
+            }
+            else {
+                add_alert('danger', $lang['BADINSCRIPTION']);
+                redirect_to($this::$path . 'new' ); 
+                
+            }
         }
 
         public function update() {

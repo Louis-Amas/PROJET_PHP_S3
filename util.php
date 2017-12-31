@@ -1,9 +1,5 @@
 <?php
-function start_page($title)
-        {
-            echo ' <!DOCTYPE html> <html lang="fr"><head><title>' . PHP_EOL . $title . '</title></head><body>' . PHP_EOL
-            ;
-        };
+
 function load_lang($url) {
     // Lire le fichier json
     $json = file_get_contents($url);
@@ -20,43 +16,24 @@ function load_lang($url) {
     }
     return $lang;
 }
-function end_page() {
-        echo '</body></html>';
-    };
-function add_success($message) {
-        if (!isset($_SESSION['success']) || !is_array($_SESSION['success']) ) {
-            $_SESSION['success'] = [];
+
+function add_alert($type, $message) {
+    if (!isset($_SESSION['alerts'][$type]) || !is_array($_SESSION['alerts'][$type]) ) {
+            $_SESSION['alerts'][$type] = [];
         } 
-        $_SESSION['success'][] = $message;
+    $_SESSION['alerts'][$type] = $message;
 }
-function add_error($message) {
-        if (!isset($_SESSION['error']) || !is_array($_SESSION['error']) ) {
-            $_SESSION['error'] = [];
-        } 
-        $_SESSION['error'][] = $message;
-    };
+function show_alerts() {
+        if ($_SESSION['alerts']) {
+          foreach ($_SESSION['alerts'] as $key => $value) {
+                echo '<div class="alert alert-'. $key . '" role="alert">' . $value . '</div>';
+        }
+        unset($_SESSION['alerts']);
+      }
+}
 
 function redirect_to($url) {
         header('Location: ' . $url);
-    };
-function show_error() {
-        if ($_SESSION['error']) {
-        echo '<ul>';
-          foreach ($_SESSION['error'] as $key => $value) {
-                echo '<li> ' . $value . '</li>';
-        }
-        echo '</ul>';
-        unset($_SESSION['error']);
-      }
-    };
-function show_success() {
-        if ($_SESSION['success']) {
-        echo '<ul>';
-          foreach ($_SESSION['success'] as $key => $value) {
-                echo '<li> ' . $value . '</li>';
-        }
-        echo '</ul>';
-        unset($_SESSION['success']);
-      }
-    };
+}
+
 ?>
