@@ -1,5 +1,10 @@
+<div class="list-group">
 <?php
     foreach ($tab as $value) {
-        echo '<p>' . $value->getUsername() . '  ' .  $value->getId() . '</p>'; 
+         echo '<a href="' . $path . $value->getId() . '" class="list-group-item list-group-item-action">' 
+         . $value->getUsername() .'</a>';
     }
+
 ?>
+
+</div>

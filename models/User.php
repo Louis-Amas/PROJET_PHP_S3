@@ -6,7 +6,10 @@
         private $username;
         private $password;
         private $salt;
-
+        
+        public function getEmail() {
+            return $this->email;
+        }
         public function __construct($result, $option = 0) {
             if ($option == 0) {
                 $this->id          = $result->USER_ID;

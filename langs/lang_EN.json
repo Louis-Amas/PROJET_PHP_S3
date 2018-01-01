@@ -12,6 +12,12 @@
             { "Users": "/?controller=user"}
         ]},
         { "HAPPYINSCRIPTION": "Good sign in"},
-        { "BADINSCRIPTION": "Bad sign in"}
+        { "BADINSCRIPTION": "Bad sign in"},
+        { "USERNAME": "Username"},
+        { "TYPEEMAIL": "Enter email"},
+        { "TYPEUSERNAME": "Enter username"},
+        { "PASSWORD": "Password"},
+        { "REPEATPASSWORD": "Confirm password"},
+        { "PASSDOESNTMATCH": "Passwords doesn't match"}
     ]
 }

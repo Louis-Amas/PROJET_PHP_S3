@@ -62,8 +62,15 @@
 
         public function create() {
             global $lang;
+            $password =filter_input(INPUT_POST, 'PASSWORD');
+            $confPassword = filter_input(INPUT_POST, 'confirmPassword');
+            var_dump($_POST);
             $user = new User($_POST, 1);
-            if (User::insert($user)) {
+            if ($password != $confPassword) {
+                add_alert('danger', $lang['PASSDOESNTMATCH']);
+                redirect_to($this::$path . 'new');
+            }
+            else if (User::insert($user)) {
                 add_alert('success', $lang['HAPPYINSCRIPTION']);
                 redirect_to('/');
             }
