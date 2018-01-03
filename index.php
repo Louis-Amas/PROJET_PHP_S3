@@ -5,8 +5,7 @@
     require 'langs/lang.php';
 
 
-    require 'views/layouts/header.php';
-    
+    require 'views/layouts/header.php'; 
     require 'routes.php';
 
 

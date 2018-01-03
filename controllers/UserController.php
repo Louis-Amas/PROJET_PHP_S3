@@ -1,9 +1,8 @@
 <?php
     require 'models/User.php';
     require_once 'util.php';
-    require_once 'Controller.php';
 
-    class UserController extends Controller {
+    class UserController {
 
         public static $path = '/?controller=user&action=';
 
@@ -14,18 +13,21 @@
         }
 
         public function loginPage() {
+            $path = $this::$path . 'login';
             require 'views/user/loginPage.php';
         }
 
         public function login() {
-            $username = filter_input(INPUT_POST, 'username');
-            $password = filter_input(INPUT_POST, 'password');
+            $username = filter_input(INPUT_POST, 'USERNAME');
+            $password = filter_input(INPUT_POST, 'PASSWORD');
             $user = User::findByUsername($username);
+            var_dump($user);
             if ($user == null) {
                 add_alert('danger','Wrong username');
-                self::loginPage();
+                redirect_to($this::$path . 'loginPage');
             }
             else {
+                var_dump($user);    
                 if ($user->verifyPassword($password)) {
                     $_SESSION['USER_ID'] = $user->getId();
                     add_alert('success', 'Welcome');
@@ -33,7 +35,7 @@
                 }
                 else {
                     add_alert('danger', 'Wrong password');
-                    self::loginPage();
+                    redirect_to($this::$path . 'loginPage');
                 }
             }
         }

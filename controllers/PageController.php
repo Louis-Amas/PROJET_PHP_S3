@@ -1,34 +1,10 @@
 <?php 
-    require_once 'Controller.php';
-    class PageController extends Controller {
 
-        
-        public function index() {
+    class PageController {
+
+        public function home() {
             require 'views/page/home.php';
         }
 
-        public function new() {
-
-        }
-
-        public function show() {
-        }
-
-
-        public function edit() {
-
-        }
-
-        public function create() {
-
-        }
-
-        public function update() {
-
-        }
-        
-        public function destroy() {
-
-        }
     }
 ?>

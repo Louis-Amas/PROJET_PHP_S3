@@ -25,9 +25,9 @@
             }
         }
         public function verifyPassword($password) {
-                if ($user->password == hash('sha256', $password . $user->password ))
-                    return true;
-                return false;
+            if ($this->password == hash('sha256', $password . $this->salt ))
+                return true;
+            return false;
         }
 
         public function getUsername() {
@@ -126,11 +126,40 @@
             }
         }
 
+        public static function findByEmail($email) {
+            $pdo = MyPdo::getConnection();
+            $sql = 'SELECT *  FROM USER WHERE EMAIL = :email';
+            $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            $stmt->bindValue('email', $email, PDO::PARAM_STR); // Lie les paramètres de manière sécurisée.
+            try
+            {
+                $stmt->execute(); // Exécution de la requête.
+                
+                if ($stmt->rowCount() == 0) {
+                    return null;
+                }
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+                while ($result = $stmt->fetch())
+                {
+                    return new User($result);
+                }
+            }
+            catch (PDOException $e)
+            {
+                // Affichage de l'erreur et rappel de la requête.
+                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+                echo 'Requête : ', $sql, PHP_EOL;
+                exit();
+            }
+        }
 
 
         public static function insert($user) {
 
             if (self::findByUsername($user->username) != null) 
+                return false;
+            if (self::findByEmail($user->email) != null) 
                 return false;
                 
             $salt = random_str(10);
@@ -140,13 +169,15 @@
             VALUES(:username, :password, :salt, now(), :email)';
             $stmt = $pdo->prepare($sql); // Préparation d'une requête.
             $id = $id;
-            $stmt->bindValue('username', $user->username, PDO::PARAM_STR);
+            /*$stmt->bindValue('username', $user->username, PDO::PARAM_STR);
             $stmt->bindValue('salt', $salt, PDO::PARAM_STR);
             $stmt->bindValue('password', $password, PDO::PARAM_STR);
-            $stmt->bindValue('email', $user->email, PDO::PARAM_STR);
+            $stmt->bindValue('email', $user->email, PDO::PARAM_STR);*/
+            $parameters = array(':username' => $user->username, ':salt' => $salt, ':password' => $user->email,
+            ':email' => $email);
 
             try {
-                $stmt->execute();
+                $stmt->execute($parameters);
                 return true;
 
             } catch (PDOException $e) {
