@@ -18,10 +18,25 @@
                 ?>
                 
             </ul>
+
             <span class="navbar-text">
-                <a href="/?controller=user&action=loginPage" class="btn btn-primary btn-lg " role="button" aria-pressed="true">Log in</a>
-                <a href="/?controller=user&action=new" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Sign-in</a>
-                
+            <?php 
+                $username = $_SESSION['USER']['username'];
+                $id = $_SESSION['USER']['id'];
+                if ($username == null) {
+            ?>
+                <a href="/?controller=user&action=loginPage" 
+                class="btn btn-primary btn-lg " role="button" aria-pressed="true">Log in</a>
+                <a href="/?controller=user&action=new" 
+                class="btn btn-primary btn-lg" role="button" aria-pressed="true">Sign-in</a>
+
+            <?php } else { ?>
+                <a href="/?controller=user&action=show&id=<?php echo $id ?>" 
+                class="btn btn-primary btn-lg " role="button" aria-pressed="true">
+                    <?php echo $username ?>
+                </a>
+            </div>
+            <?php } ?>
             </span>
         </div>
     </nav>

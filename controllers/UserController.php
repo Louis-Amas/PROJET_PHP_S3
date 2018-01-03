@@ -16,25 +16,28 @@
             $path = $this::$path . 'login';
             require 'views/user/loginPage.php';
         }
-
+        public function unlogin() {
+            unset($_SESSION['USER']);
+            redirect_to('/');
+        }
         public function login() {
+            global $lang;
             $username = filter_input(INPUT_POST, 'USERNAME');
             $password = filter_input(INPUT_POST, 'PASSWORD');
             $user = User::findByUsername($username);
-            var_dump($user);
             if ($user == null) {
-                add_alert('danger','Wrong username');
+                add_alert('danger',$lang['ERROR_WRONG_USERNAME']);
                 redirect_to($this::$path . 'loginPage');
             }
-            else {
-                var_dump($user);    
+            else {   
                 if ($user->verifyPassword($password)) {
-                    $_SESSION['USER_ID'] = $user->getId();
-                    add_alert('success', 'Welcome');
+                    $_SESSION['USER']['id'] = $user->getId();
+                    $_SESSION['USER']['username'] = $user->getUsername();
+                    add_alert('success', $lang['WELCOME'] . ' ' . $user->getUsername());
                     redirect_to('/');
                 }
                 else {
-                    add_alert('danger', 'Wrong password');
+                    add_alert('danger', $lang['ERROR_WRONG_PASSWORD']);
                     redirect_to($this::$path . 'loginPage');
                 }
             }
@@ -57,8 +60,10 @@
         public function edit() {
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
+            
+            $path = $this::$path . 'update&id=' . $id;
             if ($user == null) 
-                self::index();
+               self::index();
             require 'views/user/edit.php';
         }
 
@@ -66,7 +71,6 @@
             global $lang;
             $password =filter_input(INPUT_POST, 'PASSWORD');
             $confPassword = filter_input(INPUT_POST, 'confirmPassword');
-            var_dump($_POST);
             $user = new User($_POST, 1);
             if ($password != $confPassword) {
                 add_alert('danger', $lang['PASSDOESNTMATCH']);
@@ -84,7 +88,41 @@
         }
 
         public function update() {
+            global $lang;
+            $id = filter_input(INPUT_GET, 'id');
+            $user = User::findById($id);
+            if ($user == null) {
+                add_alert('danger', $lang['USER_NOT_EXIST']);
+                redirect_to($this::$path . 'index');
+            }
+            else {
+                $oldPassword = filter_input(INPUT_POST, 'OLDPASSWORD');
+                if ( $user->verifyPassword($oldPassword)) {
 
+                    $newPassword = filter_input(INPUT_POST, 'PASSWORD');
+                    if ($newPassword == null) {
+                        redirect_to($this::$path . 'edit&id='. $id);
+                    }
+                    else {
+                        $newPasswordConfirm = filter_input(INPUT_POST, 'confirmPassword');
+                        if ($newPassword == $newPasswordConfirm) {
+                            $user->setPassword($newPassword);
+                            User::update($user, 1);
+                            add_alert('success', $lang['SUCCESSFULL_UPDATE']);
+                            redirect_to($this::$path . 'show&id='. $id);
+                        }
+                        else {
+                            add_alert('danger', $lang['PASSDOESNTMATCH'] . ' !');
+                            redirect_to($this::$path . 'edit&id='. $id);
+                        }
+                    }
+                }
+                else {
+                    add_alert('danger', $lang['ERROR_WRONG_PASSWORD']);
+                    redirect_to($this::$path . 'edit&id='. $id);
+                }
+
+            }
         }
         
         public function destroy() {

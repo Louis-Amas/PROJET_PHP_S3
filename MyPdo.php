@@ -4,9 +4,7 @@
     class MyPdo {
 
         public static function getConnection() {
-            try
-            {
-                 // Connexion à la base de données.
+            try {// Connexion à la base de données.
                 $dsn = 'mysql:host=localhost;dbname=db_projet_php';
                 $pdo = new PDO($dsn, 'louisamas', '123');
                 // Codage de caractères.
@@ -14,8 +12,7 @@
                 // Gestion des erreurs sous forme d'exceptions.
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 return $pdo;
-            }
-            catch(PDOException $e)
+            } catch(PDOException $e)
             {
                 die('Erreur : ' . $e->getMessage());      
             }       

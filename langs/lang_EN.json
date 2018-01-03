@@ -14,10 +14,16 @@
         { "HAPPYINSCRIPTION": "Good sign in"},
         { "BADINSCRIPTION": "Bad sign in"},
         { "USERNAME": "Username"},
+        { "OLDPASSWORD": "Old password"},
         { "TYPEEMAIL": "Enter email"},
         { "TYPEUSERNAME": "Enter username"},
         { "PASSWORD": "Password"},
         { "REPEATPASSWORD": "Confirm password"},
-        { "PASSDOESNTMATCH": "Passwords doesn't match"}
+        { "PASSDOESNTMATCH": "Passwords doesn't match"},
+        { "WELCOME" : "Welcome"},
+        { "MYACCOUNT": "My account"},
+        { "UPDATE": "Update"}, 
+        { "USER_NOT_EXIST": "User not exists"},
+        { "SUCCESSFULL_UPDATE": "Successfull update"}
     ]
 }

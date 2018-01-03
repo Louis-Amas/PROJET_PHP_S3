@@ -7,6 +7,15 @@
         private $password;
         private $salt;
         
+        public function setUsername($username) {
+            $this->username = $username;
+        }
+        public function setPassword($password) {
+            $this->password = $password;
+        }
+        public function setEmail($email) {
+            $this->email = $email;
+        }
         public function getEmail() {
             return $this->email;
         }
@@ -24,7 +33,10 @@
                 $this->password    = $result['PASSWORD'];      
             }
         }
-        public function verifyPassword($password) {
+        public function getSalt() {
+            return $this->salt;
+        }
+        public function verifyPassword($password) { 
             if ($this->password == hash('sha256', $password . $this->salt ))
                 return true;
             return false;
@@ -173,9 +185,38 @@
             $stmt->bindValue('salt', $salt, PDO::PARAM_STR);
             $stmt->bindValue('password', $password, PDO::PARAM_STR);
             $stmt->bindValue('email', $user->email, PDO::PARAM_STR);*/
-            $parameters = array(':username' => $user->username, ':salt' => $salt, ':password' => $user->email,
-            ':email' => $email);
+            $parameters = array(':username' => $user->username, ':salt' => $salt, ':password' => $password,
+            ':email' => $user->email);
 
+            try {
+                $stmt->execute($parameters);
+                return true;
+
+            } catch (PDOException $e) {
+                //A supprimer en développement
+                //return false;
+                // Affichage de l'erreur et rappel de la requête.
+                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+                echo 'Requête : ', $sql, PHP_EOL;
+                exit();
+            }
+        }
+
+        public static function update($user, $mode = 0) {
+            var_dump($user->password);
+            if ($mode == 1)
+                $user->password = hash('sha256', $user->password . $user->getSalt());
+            $pdo = MyPdo::getConnection();
+            $sql =  'UPDATE USER 
+                    SET USERNAME = :username, EMAIL = :email, PASSWORD = :password
+                    WHERE USER_ID = :id';
+            var_dump($user);
+            
+            $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            
+            $parameters = array(':username' => $user->username, ':password' => $user->password,
+            ':email' => $user->email, ':id' => $user->id );
+            
             try {
                 $stmt->execute($parameters);
                 return true;

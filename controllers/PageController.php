@@ -6,5 +6,6 @@
             require 'views/page/home.php';
         }
 
+
     }
 ?>
