@@ -73,15 +73,15 @@
             $confPassword = filter_input(INPUT_POST, 'confirmPassword');
             $user = new User($_POST, 1);
             if ($password != $confPassword) {
-                add_alert('danger', $lang['PASSDOESNTMATCH']);
+                add_alert('danger', $lang['PASS_DOESNT_MATCH']);
                 redirect_to($this::$path . 'new');
             }
             else if (User::insert($user)) {
-                add_alert('success', $lang['HAPPYINSCRIPTION']);
+                add_alert('success', $lang['HAPPY_INSCRIPTION']);
                 redirect_to('/');
             }
             else {
-                add_alert('danger', $lang['BADINSCRIPTION']);
+                add_alert('danger', $lang['BAD_INSCRIPTION']);
                 redirect_to($this::$path . 'new' ); 
                 
             }
@@ -112,7 +112,7 @@
                             redirect_to($this::$path . 'show&id='. $id);
                         }
                         else {
-                            add_alert('danger', $lang['PASSDOESNTMATCH'] . ' !');
+                            add_alert('danger', $lang['PASS_DOESNT_MATCH'] . ' !');
                             redirect_to($this::$path . 'edit&id='. $id);
                         }
                     }

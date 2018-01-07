@@ -1,0 +1,30 @@
+{
+    "lang": [
+        
+        { "ERROR_WRONG_PASSWORD": "Mauvais mot de passe"},
+        { "ERROR_WRONG_USERNAME": "Mauvais nom d'utilisateur"},
+        { "ERROR_USERNAME_ALREADY_TAKEN": "Nom d'utilisateur déja utilisé"},
+        { "ERROR_EMAIL_ALREADY_TAKEN": "Email déja prise"},
+        { "SIGNIN": "S'inscrire"},
+        { "LOGIN": "Se connecter"},
+        { "MENU": [
+            { "Acceuil" : "/"},
+            { "Utilisateurs": "/?controller=user"}
+        ]},
+        { "HAPPY_INSCRIPTION": "Bienvenu vous êtes bien inscrit"},
+        { "BAD_INSCRIPTION": "Echec de l'inscription"},
+        { "USERNAME": "Nom d'utilisateur"},
+        { "OLD_PASSWORD": "Ancien mot de passe"},
+        { "TYPE_EMAIL": "Entrez votre email"},
+        { "TYPE_USERNAME": "Entrez votre nom d'utilisateur"},
+        { "PASSWORD": "Mot de passe"},
+        { "REPEAT_PASSWORD": "Confirmer le mot de passe"},
+        { "PASS_DOESNT_MATCH": "Les mots de passe ne correspondent pas"},
+        { "WELCOME" : "Bienvenu"},
+        { "MY_ACCOUNT": "Mon compte"},
+        { "UPDATE": "Mise à jour"}, 
+        { "USER_NOT_EXIST": "L'utilisateur n'existe pas"},
+        { "SUCCESSFULL_UPDATE": "Donnée bien mise à jour"},
+        { "UNLOGIN": "Se déconnecter"}
+    ]
+}

@@ -26,15 +26,33 @@
                 if ($username == null) {
             ?>
                 <a href="/?controller=user&action=loginPage" 
-                class="btn btn-primary btn-lg " role="button" aria-pressed="true">Log in</a>
+                class="btn btn-primary btn-lg " role="button" aria-pressed="true">
+                <?php echo $lang['LOGIN'] ?>
+                </a>
                 <a href="/?controller=user&action=new" 
-                class="btn btn-primary btn-lg" role="button" aria-pressed="true">Sign-in</a>
+                class="btn btn-primary btn-lg" role="button" aria-pressed="true">
+                <?php echo $lang['SIGNIN'] ?>
+                </a>
 
             <?php } else { ?>
-                <a href="/?controller=user&action=show&id=<?php echo $id ?>" 
-                class="btn btn-primary btn-lg " role="button" aria-pressed="true">
-                    <?php echo $username ?>
-                </a>
+
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="false" ">
+                        <?php echo $username ?>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/?controller=user&action=show&id=<?php echo $id ?>" 
+                        class="dropdown-item" role="button" aria-pressed="true">
+                            <?php echo $username ?>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/?controller=user&action=unlogin">
+                        <?php echo $lang['UNLOGIN'] ?>
+                        </a>
+                    </div>
+                </div>
             </div>
             <?php } ?>
             </span>

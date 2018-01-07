@@ -1,15 +1,12 @@
 <?php
     session_start();
-    require 'controllers/UserController.php';
-    require 'controllers/PageController.php';
+
     require 'langs/lang.php';
 
+    require 'App.php';
+    //demarage de l'application
 
-    require 'views/layouts/header.php'; 
-    require 'routes.php';
-
-
-    require 'views/layouts/footer.php';
+    $App = new App();
     
 ?>
 

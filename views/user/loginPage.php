@@ -5,7 +5,7 @@
  <div class="form-group">
     <label for="username"><?php echo $lang['USERNAME'] ?></label>
     <input type="text" class="form-control" name="USERNAME" 
-    placeholder="<?php echo $lang['TYPEUSERNAME'] ?>">
+    placeholder="<?php echo $lang['TYPE_USERNAME'] ?>">
   </div>
   <div class="form-group">
     <label for="password"><?php echo $lang['PASSWORD'] ?></label>
