@@ -6,7 +6,6 @@ function load_lang($url) {
 
     // Transformer json en Array php
     $json_data = json_decode($json, true);
-    
     $array = $json_data['lang'];
     $lang;
     foreach ($array as $value) {
@@ -43,5 +42,3 @@ function show_alerts() {
 function redirect_to($url) {
         header('Location: ' . $url);
 }
-
-?>

@@ -1,12 +1,10 @@
 <?php
     session_start();
-
-    require 'langs/lang.php';
-
+    require 'util.php';
+    $lang = load_lang('langs/lang_EN.json');
     require 'App.php';
     //demarage de l'application
 
     $App = new App();
     
-?>
 
