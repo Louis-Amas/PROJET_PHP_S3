@@ -1,0 +1,108 @@
+
+body
+{
+	/* Fond  du site */
+	background:url("fond menu.jpg") fixed;
+	background-size:cover;
+}
+
+header
+{
+	text-align: center;
+}
+
+p
+{
+	/* police d'écriture du site */
+	font-family: 'Ubuntu Mono', monospace;
+	font-size:100%;
+	color:white;
+	text-align:left;
+}
+
+.logo
+{
+	/* Logo de l'iut (http://dircom.univ-amu.fr/public_content/logos) */
+	display:block;
+	left:0;
+	top:0;
+}
+
+h1
+{
+	/* Titre principal */
+	color:grey;
+	font-family: 'Ubuntu Mono', monospace;
+	font-size: 350%;
+	text-align:center;
+}
+
+.introduction
+{
+	/* Forme de la pésentation descriptif  */
+	background-color: grey;
+	margin-top: 7%;
+	float: left;
+	padding: 5% 5% 5% 5%;
+	border-radius: 10% 10% 10% 10%;
+	border-style: groove;
+}
+
+.introductionprojet
+{
+	/* Forme de la pésentation du projet  */
+	background-color: grey;
+	margin-top: 7%;
+	float: left;
+	padding: 5% 5% 5% 5%;
+	border-radius: 10% 10% 10% 10%;
+	border-style: groove;
+}
+
+
+ul li
+{
+	/* MenuCSS */
+	background-color: rgb(250, 250, 250);
+	border-bottom-style: solid;
+	border-color: rgb(215, 215, 215);
+	display: block;
+	padding: 1% 8%;
+	width: 20%;
+	text-align: left;
+}
+
+form
+{
+	/* Formulaire */
+	border-style: groove;
+	border-color: #808080;
+	margin-left: 28%;
+	margin-top: 10%;
+	background-color: rgba(197, 92, 89, 0.6);
+	padding: 5%;
+	width:35%;
+}
+
+input, textarea
+{
+	/* zone de texte du formulaire */
+	width: 75%;
+	font: 100% sans-serif;
+	margin-left: 10%;
+}
+
+label
+{
+	/*disposition de chaque bande de case du formulaire */
+	margin-left: 10%;
+}
+
+
+.flechelien
+{
+	/* Fleche pour aller en haut de page */
+	margin-left: 95%;
+	margin-top: 5%;
+	width: 5%;
+}
