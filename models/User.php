@@ -6,7 +6,12 @@
         private $username;
         private $password;
         private $salt;
-        
+        private $activated;
+
+        public function isActivated(){
+          return $this->activated;
+        }
+
         public function setUsername($username) {
             $this->username = $username;
         }
@@ -19,6 +24,7 @@
         public function getEmail() {
             return $this->email;
         }
+
         public function __construct($result, $option = 0) {
             if ($option == 0) {
                 $this->id          = $result->USER_ID;
@@ -26,17 +32,18 @@
                 $this->username    = $result->USERNAME;
                 $this->password    = $result->PASSWORD;
                 $this->salt        = $result->SALT;
-                $this->date_der_co = $result->DATE_DER_CO;        
+                $this->date_der_co = $result->DATE_DER_CO;
+                $this->activated   = $result->ACTIVATED;
             } else {
                 $this->email       = $result['EMAIL'];
                 $this->username    = $result['USERNAME'];
-                $this->password    = $result['PASSWORD'];      
+                $this->password    = $result['PASSWORD'];
             }
         }
         public function getSalt() {
             return $this->salt;
         }
-        public function verifyPassword($password) { 
+        public function verifyPassword($password) {
             if ($this->password == hash('sha256', $password . $this->salt ))
                 return true;
             return false;
@@ -59,7 +66,7 @@
             $stmt = $pdo->prepare($sql); // Préparation d'une requête
             try {
                 $stmt->execute(); // Exécution de la requête.
-                
+
                 if ($stmt->rowCount() == 0) {
                     return null;
                 }
@@ -68,9 +75,9 @@
                 while ($result = $stmt->fetch())
                 {
                     $all[] = new User($result);
-                    
-                } 
-                
+
+                }
+
             } catch (PDOException $e) {
 
                 // Affichage de l'erreur et rappel de la requête.
@@ -85,12 +92,12 @@
             $pdo = MyPdo::getConnection();
             $sql = 'SELECT *  FROM USER WHERE USER_ID = :id';
             $stmt = $pdo->prepare($sql); // Préparation d'une requête.
-            $id = $id;  
+            $id = $id;
             $stmt->bindValue('id', $id, PDO::PARAM_INT); // Lie les paramètres de manière sécurisée.
             try
             {
                 $stmt->execute(); // Exécution de la requête.
-                
+
                 if ($stmt->rowCount() == 0) {
                     return null;
                 }
@@ -118,7 +125,7 @@
             try
             {
                 $stmt->execute(); // Exécution de la requête.
-                
+
                 if ($stmt->rowCount() == 0) {
                     return null;
                 }
@@ -146,7 +153,7 @@
             try
             {
                 $stmt->execute(); // Exécution de la requête.
-                
+
                 if ($stmt->rowCount() == 0) {
                     return null;
                 }
@@ -166,18 +173,32 @@
             }
         }
 
+        public function activate() {
+          $pdo = MyPdo::getConnection();
+          $query = 'UPDATE USER SET ACTIVATED = 1 WHERE USER_ID = :id';
+          $stmt = $pdo->prepare($query);
+          $parameters = array(':id' => $this->id);
+          try {
+              $stmt->execute($parameters);
+              return true;
+          } catch (PDOException $e) {
+              add_alert('Erreur : ', $e->getMessage(), PHP_EOL);
+              add_alert('Requête : ', $sql, PHP_EOL);
+              redirect_to('/');
+          }
+        }
 
         public static function insert($user) {
 
-            if (self::findByUsername($user->username) != null) 
+            if (self::findByUsername($user->username) != null)
                 return false;
-            if (self::findByEmail($user->email) != null) 
+            if (self::findByEmail($user->email) != null)
                 return false;
-                
+
             $salt = random_str(10);
             $password = hash('sha256', $user->password . $salt);
             $pdo = MyPdo::getConnection();
-            $sql = 'INSERT INTO USER(USERNAME, PASSWORD, SALT, DATE_DER_CO, EMAIL) 
+            $sql = 'INSERT INTO USER(USERNAME, PASSWORD, SALT, DATE_DER_CO, EMAIL)
             VALUES(:username, :password, :salt, now(), :email)';
             $stmt = $pdo->prepare($sql); // Préparation d'une requête.
             $id = $id;
@@ -207,16 +228,16 @@
             if ($mode == 1)
                 $user->password = hash('sha256', $user->password . $user->getSalt());
             $pdo = MyPdo::getConnection();
-            $sql =  'UPDATE USER 
+            $sql =  'UPDATE USER
                     SET USERNAME = :username, EMAIL = :email, PASSWORD = :password
                     WHERE USER_ID = :id';
             var_dump($user);
-            
+
             $stmt = $pdo->prepare($sql); // Préparation d'une requête.
-            
+
             $parameters = array(':username' => $user->username, ':password' => $user->password,
             ':email' => $user->email, ':id' => $user->id );
-            
+
             try {
                 $stmt->execute($parameters);
                 return true;

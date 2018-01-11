@@ -29,8 +29,12 @@
                 add_alert('danger',$lang['ERROR_WRONG_USERNAME']);
                 redirect_to($this::$path . 'loginPage');
             }
-            else {   
-                if ($user->verifyPassword($password)) {
+            else {
+                if (!$user->isActivated()){
+                  add_alert('danger', 'This account is not activated please check out your emails');
+                  redirect_to('/');
+                }
+                elseif ($user->verifyPassword($password)) {
                     $_SESSION['USER']['id'] = $user->getId();
                     $_SESSION['USER']['username'] = $user->getUsername();
                     add_alert('success', $lang['WELCOME'] . ' ' . $user->getUsername());
@@ -51,7 +55,7 @@
         public function show() {
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
-            if ($user == null) 
+            if ($user == null)
                 self::index();
             require 'views/user/show.php';
         }
@@ -60,30 +64,53 @@
         public function edit() {
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
-            
+
             $path = $this::$path . 'update&id=' . $id;
-            if ($user == null) 
+            if ($user == null)
                self::index();
             require 'views/user/edit.php';
+        }
+
+        public function activateaccount(){
+            $email = filter_input(INPUT_GET,'email');
+            $salt = filter_input(INPUT_GET,'salt');
+            $user = User::findByEmail($email);
+            if ($user && $user->getSalt() == $salt){
+              $user->activate();
+              add_alert('success','Your account have been activated !');
+              redirect_to('/');
+            } else{
+              add_alert('danger', 'An error occured please contact an administrator');
+              redirect_to('/');
+            }
+
         }
 
         public function create() {
             global $lang;
             $password =filter_input(INPUT_POST, 'PASSWORD');
             $confPassword = filter_input(INPUT_POST, 'confirmPassword');
+            $choosenname = filter_input(INPUT_POST, 'username');
+            $email = filter_input(INPUT_POST, 'EMAIL');
+
             $user = new User($_POST, 1);
             if ($password != $confPassword) {
                 add_alert('danger', $lang['PASS_DOESNT_MATCH']);
                 redirect_to($this::$path . 'new');
             }
+            elseif (array_search(null,$_POST)) {
+              add_alert('danger', $lang['BAD_INSCRIPTION'] . ': Please fill all the fields');
+              redirect_to($this::$path . 'new');
+            }
             else if (User::insert($user)) {
-                add_alert('success', $lang['HAPPY_INSCRIPTION']);
+                add_alert('success', $lang['HAPPY_INSCRIPTION'].'EMAIL :'.$email);
+                send_confirmation_email($email,User::findByEmail($email)->getSalt());
                 redirect_to('/');
             }
             else {
                 add_alert('danger', $lang['BAD_INSCRIPTION']);
-                redirect_to($this::$path . 'new' ); 
-                
+                redirect_to($this::$path . 'new' );
+
             }
         }
 
@@ -124,7 +151,7 @@
 
             }
         }
-        
+
         public function destroy() {
 
         }

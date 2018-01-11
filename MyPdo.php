@@ -5,8 +5,8 @@
 
         public static function getConnection() {
             try {// Connexion à la base de données.
-                $dsn = 'mysql:host=localhost;dbname=db_projet_php';
-                $pdo = new PDO($dsn, 'louisamas', '123');
+                $dsn = 'mysql:host=mysql-projetsem3php.alwaysdata.net;dbname=projetsem3php_database';
+                $pdo = new PDO($dsn, '150610', 'root');
                 // Codage de caractères.
                 $pdo->exec('SET CHARACTER SET utf8');
                 // Gestion des erreurs sous forme d'exceptions.
@@ -14,8 +14,7 @@
                 return $pdo;
             } catch(PDOException $e)
             {
-                die('Erreur : ' . $e->getMessage());      
-            }       
+                die('Erreur : ' . $e->getMessage());
+            }
         }
     }
-
