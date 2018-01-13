@@ -16,15 +16,32 @@
             $path = $this::$path . 'login';
             require 'views/user/loginPage.php';
         }
+        public function forgotPassword(){
+          $path = $this::$path . 'forgot';
+          require 'views/user/forgotPassword.php';
+        }
+        public function forgot()
+        {
+          $email = filter_input(INPUT_POST,'EMAIL');
+          send_reset_email($email);
+          add_alert('success','An email as just been sent to '.$email);
+          redirect_to('/');
+        }
+
         public function unlogin() {
             unset($_SESSION['USER']);
             redirect_to('/');
         }
         public function login() {
             global $lang;
+
             $username = filter_input(INPUT_POST, 'USERNAME');
             $password = filter_input(INPUT_POST, 'PASSWORD');
             $user = User::findByUsername($username);
+            if ($_POST['submit']=="forgot"){
+              redirect_to($this::$path . 'forgotPassword');
+              exit;
+            }
             if ($user == null) {
                 add_alert('danger',$lang['ERROR_WRONG_USERNAME']);
                 redirect_to($this::$path . 'loginPage');
@@ -61,10 +78,30 @@
         }
 
 
+        public function reset() {
+          $email = filter_input(INPUT_GET, 'email');
+          $salt = filter_input(INPUT_GET,'salt');
+          if(is_null($email) || is_null($salt)){
+            add_alert('danger', 'An error occured please contact an administrator');
+            redirect_to('/');
+            exit;
+          }
+          $user = User::findByEmail($email);
+          if($user->getSalt() != $salt){
+            add_alert('danger', 'Verification error please contact an administrator');
+            redirect_to('/');
+            exit;
+          }
+          $id = $user->getId();
+          $path = $this::$path . 'reseting&id=' . $id;
+          if ($user == null)
+             self::index();
+          require 'views/user/reset.php';
+        }
+
         public function edit() {
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
-
             $path = $this::$path . 'update&id=' . $id;
             if ($user == null)
                self::index();
@@ -114,7 +151,11 @@
             }
         }
 
-        public function update() {
+        public function reseting(){
+            self::update(true);
+        }
+
+        public function update($reseting=false) {
             global $lang;
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
@@ -124,7 +165,7 @@
             }
             else {
                 $oldPassword = filter_input(INPUT_POST, 'OLDPASSWORD');
-                if ( $user->verifyPassword($oldPassword)) {
+                if ( $reseting || $user->verifyPassword($oldPassword)) {
 
                     $newPassword = filter_input(INPUT_POST, 'PASSWORD');
                     if ($newPassword == null) {
