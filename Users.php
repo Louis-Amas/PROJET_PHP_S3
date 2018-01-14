@@ -6,6 +6,7 @@
  * Time: 18:18
  */
 
+require_once("connexionBD.php");
 
  session_start();
 
