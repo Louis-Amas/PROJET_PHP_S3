@@ -23,10 +23,10 @@ if (!isset($_POST['submit']))
 }
 else
 {
-	//
-	$login  = (isset($_POST['login']));
-	$pwd   = (isset($_POST['pwd']));
 
+	$login = !empty($_POST['login']) ? $_POST['login'] : NULL;
+	$pass = !empty($_POST['password']) ? $_POST['password'] : NULL;
+	
 	if (($login != '') && ($pwd != ''))
 	{
 		// Vérifié si le compte existe
