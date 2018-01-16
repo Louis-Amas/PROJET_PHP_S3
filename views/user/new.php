@@ -3,12 +3,12 @@
 
   <div class="form-group">
     <label for="email">Email</label>
-    <input type="email" class="form-control" name="EMAIL" aria-describedby="emailHelp" 
+    <input type="email" class="form-control" name="EMAIL" aria-describedby="emailHelp"
     placeholder="<?php echo $lang['TYPE_EMAIL'] ?>">
   </div>
  <div class="form-group">
     <label for="username"><?php echo $lang['USERNAME'] ?></label>
-    <input type="text" class="form-control" name="USERNAME" 
+    <input id="username" type="text" class="form-control" name="USERNAME" 
     placeholder="<?php echo $lang['TYPE_USERNAME'] ?>">
   </div>
   <div class="form-group">

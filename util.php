@@ -19,14 +19,11 @@ function load_lang($url) {
 function send_confirmation_email($email,$salt) {
   $message = 'Hello, Thanks for your re gistration please click here to activate your account: '.
   'http://projetsem3php.alwaysdata.net/?controller=user&action=activateaccount&email='.$email.'&salt='.$salt;
-
-
     $message = wordwrap($message,70,"\r\n");
       if (!mail($email,'Registration confirmation email',$message)){
         add_alert('danger', 'Error: '.$email . ' ' . $salt);
         redirect_to('/');
       }
-
 }
 
 function send_reset_email($email) {

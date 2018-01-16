@@ -7,7 +7,7 @@
         public static $path = '/?controller=user&action=';
 
         public function index() {
-            $tab = User::findAll();
+            $tab = User::findAllActivated();
             $path = $this::$path . 'show&id=';
             require 'views/user/index.php';
         }
@@ -73,7 +73,7 @@
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
             if ($user == null)
-                self::index();
+                redirect_to('/');
             require 'views/user/show.php';
         }
 
@@ -127,13 +127,16 @@
             global $lang;
             $password =filter_input(INPUT_POST, 'PASSWORD');
             $confPassword = filter_input(INPUT_POST, 'confirmPassword');
-            $choosenname = filter_input(INPUT_POST, 'username');
+            $choosenname = filter_input(INPUT_POST, 'USERNAME');
             $email = filter_input(INPUT_POST, 'EMAIL');
-
             $user = new User($_POST, 1);
             if ($password != $confPassword) {
                 add_alert('danger', $lang['PASS_DOESNT_MATCH']);
                 redirect_to($this::$path . 'new');
+            }
+            elseif (strlen($choosenname) > 32) {
+              add_alert('danger',$lang['BAD_INSCRIPTION'].': Username too long');
+              redirect_to(self::$path.'new');
             }
             elseif (array_search(null,$_POST)) {
               add_alert('danger', $lang['BAD_INSCRIPTION'] . ': Please fill all the fields');
