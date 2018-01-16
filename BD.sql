@@ -5,7 +5,9 @@
     SALT varchar(255),
     DATE_DER_CO DATE,
     ACTIVATED tinyint(1), 
+    TYPE varchar (4),                
     PRIMARY KEY(USER_ID));
+    
 
 
 CREATE TABLE SENTENCE (
