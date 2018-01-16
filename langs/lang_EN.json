@@ -1,6 +1,6 @@
 {
     "lang": [
-        
+
         { "ERROR_WRONG_PASSWORD": "Wrong password"},
         { "ERROR_WRONG_USERNAME": "Wrong username"},
         { "ERROR_USERNAME_ALREADY_TAKEN": "Username already taken"},
@@ -11,7 +11,7 @@
             { "Home" : "/"},
             { "Users": "/?controller=user"}
         ]},
-        { "HAPPY_INSCRIPTION": "Good sign in"},
+        { "HAPPY_INSCRIPTION": "Good sign in, a confirmation email as just been sent to activate your account"},
         { "BAD_INSCRIPTION": "Bad sign in"},
         { "USERNAME": "Username"},
         { "OLD_PASSWORD": "Old password"},
@@ -22,7 +22,7 @@
         { "PASS_DOESNT_MATCH": "Passwords doesn't match"},
         { "WELCOME" : "Welcome"},
         { "MY_ACCOUNT": "My account"},
-        { "UPDATE": "Update"}, 
+        { "UPDATE": "Update"},
         { "USER_NOT_EXIST": "User not exists"},
         { "SUCCESSFULL_UPDATE": "Successfull update"}
     ]

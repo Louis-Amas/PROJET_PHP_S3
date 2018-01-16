@@ -3,13 +3,13 @@
 
   <div class="form-group">
     <label for="email">Email</label>
-    <input type="email" class="form-control" name="EMAIL" aria-describedby="emailHelp"
-    placeholder="<?php echo $lang['TYPE_EMAIL'] ?>">
+    <input type="email" class="form-control" readonly name="EMAIL" aria-describedby="emailHelp"
+    placeholder="<?php echo $lang['TYPE_EMAIL'] ?>" value="<?php echo $user->getEmail() ?>">
   </div>
  <div class="form-group">
     <label for="username"><?php echo $lang['USERNAME'] ?></label>
-    <input id="username" type="text" class="form-control" name="USERNAME" 
-    placeholder="<?php echo $lang['TYPE_USERNAME'] ?>">
+    <input type="text" readonly class="form-control" name="USERNAME"
+    placeholder="<?php echo $lang['TYPE_USERNAME'] ?>" value="<?php echo $user->getUsername() ?>">
   </div>
   <div class="form-group">
     <label for="password"><?php echo $lang['PASSWORD'] ?></label>
