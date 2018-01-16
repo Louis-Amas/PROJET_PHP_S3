@@ -6,10 +6,10 @@
         private $username;
         private $password;
         private $salt;
-        private $activated;
+        private $type;
 
-        public function isActivated(){
-          return $this->activated;
+        public function getType(){
+          return $this->type;
         }
 
         public function setUsername($username) {
@@ -33,7 +33,7 @@
                 $this->password    = $result->PASSWORD;
                 $this->salt        = $result->SALT;
                 $this->date_der_co = $result->DATE_DER_CO;
-                $this->activated   = $result->ACTIVATED;
+                $this->type        = $result->TYPE;
             } else {
                 $this->email       = $result['EMAIL'];
                 $this->username    = $result['USERNAME'];
