@@ -201,7 +201,7 @@
 
         public function activate() {
           $pdo = MyPdo::getConnection();
-          $query = 'UPDATE USER SET ACTIVATED = 1 WHERE USER_ID = :id';
+          $query = 'UPDATE USER SET TYPE = NOR WHERE USER_ID = :id';
           $stmt = $pdo->prepare($query);
           $parameters = array(':id' => $this->id);
           try {
