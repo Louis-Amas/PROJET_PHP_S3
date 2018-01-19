@@ -130,6 +130,10 @@
             $choosenname = filter_input(INPUT_POST, 'USERNAME');
             $email = filter_input(INPUT_POST, 'EMAIL');
             $user = new User($_POST, 1);
+            $captcha = filter_input(INPUT_POST,'g-recaptcha-response');
+            $captchaValidation = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=6LeTWUAUAAAAAMCWwcOelu8Wc3kxrnnBmUR1B3p9&response='.$captcha);
+            $responseKeys=json_decode($captchaValidation,true);
+          
             if ($password != $confPassword) {
                 add_alert('danger', $lang['PASS_DOESNT_MATCH']);
                 redirect_to($this::$path . 'new');

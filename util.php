@@ -1,5 +1,4 @@
 <?php
-
 function load_lang($url) {
     // Lire le fichier json
     $json = file_get_contents($url);
@@ -27,7 +26,6 @@ function send_confirmation_email($email,$salt) {
 }
 
 function send_reset_email($email) {
-
   $user = User::findByEmail($email);
   if (!is_null($user)){
     $message = 'Hello, Follow this link to reset your password (ignore it if the action is not from you) '.
