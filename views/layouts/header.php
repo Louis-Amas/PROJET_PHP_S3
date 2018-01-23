@@ -8,6 +8,8 @@
 </head>
 <body>
 
-    <?php require 'views/layouts/nav.php' ?>
+    <?php
+    require 'views/layouts/nav.php'
+    ?>
     <div class="container">
-    <?php show_alerts(); ?>
+    <?php Alert::show_alert(); ?>

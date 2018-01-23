@@ -1,5 +1,4 @@
 <?php
-    require 'MyPdo.php';
     class User {
         private $id;
         private $email;
@@ -208,9 +207,9 @@
               $stmt->execute($parameters);
               return true;
           } catch (PDOException $e) {
-              add_alert('Erreur : ', $e->getMessage(), PHP_EOL);
-              add_alert('Requête : ', $sql, PHP_EOL);
-              redirect_to('/');
+              new Alert('Erreur : ', $e->getMessage(), PHP_EOL);
+              new Alert('Requête : ', $sql, PHP_EOL);
+              Util::redirect_to('/');
           }
         }
 
@@ -221,7 +220,7 @@
             if (self::findByEmail($user->email) != null)
                 return false;
 
-            $salt = random_str(10);
+            $salt = Util::random_str(10);
             $password = hash('sha256', $user->password . $salt);
             $pdo = MyPdo::getConnection();
             $sql = 'INSERT INTO USER(USERNAME, PASSWORD, SALT, DATE_DER_CO, EMAIL)

@@ -3,24 +3,26 @@ class Email {
   private $destination;
   private $subject;
   private $message;
-  public function __construct($destination,$message,$subject=''){
+  public function __construct($destination,$message='',$subject=''){
     $this->destination = $destination;
     $this->message = $message;
     $this->subject=$subject;
   }
   public function send(){
+    error_reporting(E_ALL);
     return mail($this->destination,$this->subject,$this->message);
   }
 
   public static function send_confirmation_email($email) {
     $user = User::findByEmail($email);
-    $message = 'Hello, Thanks for your re gistration please click here to activate your account: '.
-    'http://projetsem3php.alwaysdata.net/?controller=user&action=activateaccount&email='.$email.'&salt='.$user->getSalt();
+    new Alert('danger',$user);
+    $message = 'Hello, Thanks for your registration please click here to activate your account: '.
+    'https://projetsem3php.alwaysdata.net/?controller=user&action=activateaccount&email='.$email.'&salt='.$user->getSalt();
     $message = wordwrap($message,70,"\r\n");
     $MyEmail = new Email($email,$message,'Registration confirmation email');
-      if ($MyEmail->send()){
-        add_alert('danger', 'Error: '.$email . ' ' . $salt);
-        redirect_to('/');
+      if (!$MyEmail->send()){
+        new Alert('danger', 'Error: '.$email . ' ' . $salt);
+        Util::redirect_to('/');
       }
   }
   public static function send_reset_email($email){
@@ -30,9 +32,9 @@ class Email {
       'http://projetsem3php.alwaysdata.net/?controller=user&action=reset&email='.$email.'&salt='.$user->getSalt();
       $message = wordwrap($message,70,"\r\n");
       $MyEmail = new Email($email,$message,'Resetting your password');
-        if ($MyEmail->send()){
-          add_alert('danger', 'Error: '.$email);
-          redirect_to('/');
+        if (!$MyEmail->send()){
+          new Alert('danger', 'Error: '.$email);
+          Util::redirect_to('/');
         }
     }
   }
