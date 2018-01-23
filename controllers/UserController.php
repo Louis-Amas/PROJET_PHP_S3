@@ -45,7 +45,7 @@
 
         public function create() {
             $path = $this::$path . 'createAction';
-            require 'views/user/new.php';
+            require 'views/user/create.php';
         }
 
         public function show() {
