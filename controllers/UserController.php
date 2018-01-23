@@ -29,7 +29,7 @@
                 add_alert('danger',$lang['ERROR_WRONG_USERNAME']);
                 redirect_to($this::$path . 'loginPage');
             }
-            else {   
+            else {
                 if ($user->verifyPassword($password)) {
                     $_SESSION['USER']['id'] = $user->getId();
                     $_SESSION['USER']['username'] = $user->getUsername();
@@ -43,15 +43,15 @@
             }
         }
 
-        public function new() {
-            $path = $this::$path . 'create';
+        public function create() {
+            $path = $this::$path . 'createAction';
             require 'views/user/new.php';
         }
 
         public function show() {
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
-            if ($user == null) 
+            if ($user == null)
                 self::index();
             require 'views/user/show.php';
         }
@@ -60,14 +60,14 @@
         public function edit() {
             $id = filter_input(INPUT_GET, 'id');
             $user = User::findById($id);
-            
+
             $path = $this::$path . 'update&id=' . $id;
-            if ($user == null) 
+            if ($user == null)
                self::index();
             require 'views/user/edit.php';
         }
 
-        public function create() {
+        public function createAction() {
             global $lang;
             $password =filter_input(INPUT_POST, 'PASSWORD');
             $confPassword = filter_input(INPUT_POST, 'confirmPassword');
@@ -82,8 +82,8 @@
             }
             else {
                 add_alert('danger', $lang['BAD_INSCRIPTION']);
-                redirect_to($this::$path . 'new' ); 
-                
+                redirect_to($this::$path . 'new' );
+
             }
         }
 
@@ -124,7 +124,7 @@
 
             }
         }
-        
+
         public function destroy() {
 
         }
