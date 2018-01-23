@@ -209,7 +209,7 @@
           } catch (PDOException $e) {
               new Alert('Erreur : ', $e->getMessage(), PHP_EOL);
               new Alert('Requête : ', $sql, PHP_EOL);
-              Util::redirect_to('/');
+              Util::redirect_to('/'); 
           }
         }
 

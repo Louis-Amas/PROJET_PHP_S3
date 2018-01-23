@@ -22,7 +22,7 @@ class Email {
     $MyEmail = new Email($email,$message,'Registration confirmation email');
       if (!$MyEmail->send()){
         new Alert('danger', 'Error: '.$email . ' ' . $salt);
-        Util::redirect_to('/');
+        Util::Util::redirect_to('/');
       }
   }
   public static function send_reset_email($email){
@@ -34,7 +34,7 @@ class Email {
       $MyEmail = new Email($email,$message,'Resetting your password');
         if (!$MyEmail->send()){
           new Alert('danger', 'Error: '.$email);
-          Util::redirect_to('/');
+          Util::Util::redirect_to('/');
         }
     }
   }
