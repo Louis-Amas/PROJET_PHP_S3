@@ -61,7 +61,7 @@
 
         public static function findAllActivated(){
           $pdo = MyPdo::getConnection();
-          $sql = 'SELECT *  FROM USER WHERE TYPE IS NOT NULL;
+          $sql = 'SELECT *  FROM USER WHERE TYPE IS NOT NULL';
           $stmt = $pdo->prepare($sql); // Préparation d'une requête
           try {
               $stmt->execute(); // Exécution de la requête.
