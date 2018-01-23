@@ -10,6 +10,9 @@
         public function getType(){
           return $this->type;
         }
+        public function isActivated(){
+          return is_null($type);
+        }
 
         public function setUsername($username) {
             $this->username = $username;
@@ -200,7 +203,7 @@
 
         public function activate() {
           $pdo = MyPdo::getConnection();
-          $query = 'UPDATE USER SET TYPE = NOR WHERE USER_ID = :id';
+          $query = 'UPDATE USER SET TYPE = "NOR" WHERE USER_ID = :id';
           $stmt = $pdo->prepare($query);
           $parameters = array(':id' => $this->id);
           try {
@@ -209,7 +212,7 @@
           } catch (PDOException $e) {
               new Alert('Erreur : ', $e->getMessage(), PHP_EOL);
               new Alert('Requête : ', $sql, PHP_EOL);
-              Util::redirect_to('/'); 
+              Util::redirect_to('/');
           }
         }
 
