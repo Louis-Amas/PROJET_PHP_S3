@@ -5,31 +5,31 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-                <?php 
+                <?php
                     foreach ($lang['MENU'] as $value) {
                         foreach ($value as $key => $val) {
                         echo '<li class="nav-item">
-                                <a class="nav-link" href="'. $val . '"> 
+                                <a class="nav-link" href="'. $val . '">
                                 ' . $key. '
                                 </a>
                              </li>';
                         }
                     }
                 ?>
-                
+
             </ul>
 
             <span class="navbar-text">
-            <?php 
+            <?php
                 $username = $_SESSION['USER']['username'];
                 $id = $_SESSION['USER']['id'];
                 if ($username == null) {
             ?>
-                <a href="/?controller=user&action=loginPage" 
+                <a href="/?controller=user&action=loginPage"
                 class="btn btn-primary btn-lg " role="button" aria-pressed="true">
                 <?php echo $lang['LOGIN'] ?>
                 </a>
-                <a href="/?controller=user&action=new" 
+                <a href="/?controller=user&action=create" 
                 class="btn btn-primary btn-lg" role="button" aria-pressed="true">
                 <?php echo $lang['SIGNIN'] ?>
                 </a>
@@ -38,12 +38,12 @@
 
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" 
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false" ">
                         <?php echo $username ?>
                     </button>
                     <div class="dropdown-menu">
-                        <a href="/?controller=user&action=show&id=<?php echo $id ?>" 
+                        <a href="/?controller=user&action=show&id=<?php echo $id ?>"
                         class="dropdown-item" role="button" aria-pressed="true">
                             <?php echo $username ?>
                         </a>
