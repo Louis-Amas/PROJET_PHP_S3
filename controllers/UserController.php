@@ -62,7 +62,10 @@
              if($_SESSION['USER']['id'] == $id){
                    $user = User::findById($id);
                    $path = $this::$path . 'update&id=' . $id;
-                }
+                  }
+             else{
+                   redirect_to($this::$path . 'login');
+                 }
             if ($user == null) 
                self::index();
             require 'views/user/edit.php';
