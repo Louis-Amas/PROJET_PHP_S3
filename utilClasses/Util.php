@@ -12,20 +12,28 @@ class Util{
     return $str;
   }
 
-  public static function must_connected($path = '/', $rights = 'NOR'){
+  public static function can_acces($rights){
+    if (empty($_SESSION) && $rights != null) {
+      return false;
+    }
+    if ($rights != $_SESSION['USER']['rights']){
+      if ($rights == 'PRE' && $_SESSION['USER']['rights'] == 'NOR'){
+        return false;
+      }
+      elseif ($rights == 'ADM') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static function must_connected($path = 'index.php', $rights = 'NOR'){
     if (empty($_SESSION)){
       new Alert('danger','You must be connected in order to access this page');
       self::redirect_to($path);
     }
-    elseif ($rights != $_SESSION['USER']['rights']){
-      if ($rights == 'PRE' && $_SESSION['USER']['rights'] == 'NOR'){
-        new Alert('danger','You must be a premium member or an administrator in order to acces this page');
-        self::redirect_to($path);
-      }
-      elseif ($rights == 'ADM') {
-        new Alert('danger','You must be an administrator in order to acces this page');
-        self::redirect_to($path);
-      }
+    elseif (!self::can_acces($rights)){
+      new Alert('danger','You don\'t have enough rights to acces this page');
     }
   }
 
