@@ -23,5 +23,19 @@
     <label for="repeatPassword"><?php echo $lang['REPEAT_PASSWORD'] ?></label>
     <input type="password" name="confirmPassword" class="form-control" placeholder="<?php echo $lang['REPEAT_PASSWORD']?>">
   </div>
+
+  <?php if (Util::can_acces("ADM")) {?>
+  <div class="form-group">
+    <label for "roleselect"> Select a role: </label>
+    <select class="form-control" id="roleselect" name="ROLE">
+      <?php foreach ($roles as $key => $value) {
+        echo '<option value="'.$key.'"';
+        if ($user->getType() == $key)
+          echo 'selected';
+        echo '>'.$value.'</option>';
+      }?>
+    </select>
+  </div>
+  <?php } ?>
   <button type="submit" class="btn btn-primary"><?php echo 'Edit' ?></button>
 </form>

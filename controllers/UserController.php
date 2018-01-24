@@ -101,6 +101,7 @@ class UserController {
     $id = filter_input(INPUT_GET, 'id');
     Util::must_be_user($id);
     $user = User::findById($id);
+    $roles = array('ADM'=>'Administrator','PRE'=>'Premium','NOR'=>'Regular');
     $path = $this::$path . 'update&id=' . $id;
     if ($user == null)
     self::index();
@@ -170,10 +171,14 @@ class UserController {
       $newPasswordConfirm = filter_input(INPUT_POST, 'confirmPassword');
       $oldPassword = filter_input(INPUT_POST, 'OLDPASSWORD');
       $username = filter_input(INPUT_POST, 'USERNAME');
+      $role = filter_input(INPUT_POST,'ROLE');
       $mode = 0;
       if (!is_null($username))
         $user->setUsername($username);
-      if ($reseting || $user->verifyPassword($oldPassword)){
+      if ((!empty($role) || !is_null($role)) && $_SESSION['USER']['rights'] == 'ADM')
+        $user->setType($role);
+
+      if ($reseting || $_SESSION['USER']['rights'] == 'ADM' || $user->verifyPassword($oldPassword)){
         if (!empty($newPassword) && $newPassword == $newPasswordConfirm){
             $user->setPassword($newPassword);
             $mode = 1;
@@ -184,11 +189,15 @@ class UserController {
           return;
         }
         User::update($user, $mode);
+        if($user->getId() == $_SESSION['USER']['id']){
+          $_SESSION['USER']['username'] = $user->getUsername();
+          $_SESSION['USER']['rights'] = $user->getType();
+        }
         new Alert('success', $lang['SUCCESSFULL_UPDATE']);
         Util::redirect_to($this::$path . 'show&id='. $id);
       }
       elseif (empty($oldPassword)){
-        new Alert('warning','You need to fill \'Old password\' in order to edit your account' );
+        new Alert('warning','You need to fill \'Old password\' in order to edit your account'.  $user->getType());
         Util::redirect_to($this::$path . 'edit&id='. $id);
       }
       else {

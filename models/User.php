@@ -10,6 +10,11 @@ class User {
   public function getType(){
     return $this->type;
   }
+
+  public function setType($role){
+    $this->type = $role;
+  }
+
   public function isActivated(){
     return is_null($type);
   }
@@ -254,18 +259,18 @@ class User {
   public static function update($user, $mode = 0) {
     var_dump($user->password);
     $sql =   'UPDATE USER
-              SET USERNAME = :username, EMAIL = :email
+              SET USERNAME = :username, EMAIL = :email, TYPE = :type
               WHERE USER_ID = :id';
     $parameters = array(':username' => $user->username,
-    ':email' => $user->email, ':id' => $user->id );
+    ':email' => $user->email, ':id' => $user->id ,':type' => $user->type);
 
     if ($mode == 1){
       $user->password = hash('sha256', $user->password . $user->getSalt());
       $sql = 'UPDATE USER
-              SET USERNAME = :username, EMAIL = :email, PASSWORD = :password
+              SET USERNAME = :username, EMAIL = :email, PASSWORD = :password, TYPE = :type
               WHERE USER_ID = :id';
       $parameters = array(':username' => $user->username, ':password' => $user->password,
-      ':email' => $user->email, ':id' => $user->id );
+      ':email' => $user->email, ':id' => $user->id  ,':type' => $user->type);
     }
     $pdo = MyPdo::getConnection();
 
