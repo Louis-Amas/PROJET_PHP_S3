@@ -162,25 +162,30 @@ class UserController {
       Util::redirect_to($this::$path . 'index');
     }
     else {
+      $newPassword = filter_input(INPUT_POST,'PASSWORD');
+      $newPasswordConfirm = filter_input(INPUT_POST, 'confirmPassword');
       $oldPassword = filter_input(INPUT_POST, 'OLDPASSWORD');
-      if ( $reseting || $user->verifyPassword($oldPassword)) {
-        $newPassword = filter_input(INPUT_POST, 'PASSWORD');
-        if ($newPassword == null) {
-          Util::redirect_to($this::$path . 'edit&id='. $id);
-        }
-        else {
-          $newPasswordConfirm = filter_input(INPUT_POST, 'confirmPassword');
-          if ($newPassword == $newPasswordConfirm) {
+      $username = filter_input(INPUT_POST, 'USERNAME');
+      $mode = 0;
+      if (!is_null($username))
+        $user->setUsername($username);
+      if ($reseting || $user->verifyPassword($oldPassword)){
+        if (!empty($newPassword) && $newPassword == $newPasswordConfirm){
             $user->setPassword($newPassword);
-            User::update($user, 1);
-            new Alert('success', $lang['SUCCESSFULL_UPDATE']);
-            Util::redirect_to($this::$path . 'show&id='. $id);
-          }
-          else {
-            new Alert('danger', $lang['PASS_DOESNT_MATCH'] . ' !');
-            Util::redirect_to($this::$path . 'edit&id='. $id);
-          }
+            $mode = 1;
         }
+        elseif (!empty($newPassword) && $newPassword != $newPasswordConfirm){
+          new Alert('danger', $lang['PASS_DOESNT_MATCH'] . ' !');
+          Util::redirect_to($_SERVER['HTTP_REFERER']);
+          return;
+        }
+        User::update($user, $mode);
+        new Alert('success', $lang['SUCCESSFULL_UPDATE']);
+        Util::redirect_to($this::$path . 'show&id='. $id);
+      }
+      elseif (empty($oldPassword)){
+        new Alert('warning','You need to fill \'Old password\' in order to edit your account' );
+        Util::redirect_to($this::$path . 'edit&id='. $id);
       }
       else {
         new Alert('danger', $lang['ERROR_WRONG_PASSWORD']);

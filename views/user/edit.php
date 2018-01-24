@@ -8,7 +8,7 @@
   </div>
  <div class="form-group">
     <label for="username"><?php echo $lang['USERNAME'] ?></label>
-    <input type="text" readonly class="form-control" name="USERNAME"
+    <input type="text" class="form-control" name="USERNAME"
     placeholder="<?php echo $lang['TYPE_USERNAME'] ?>" value="<?php echo $user->getUsername() ?>">
   </div>
 <div class="form-group">
