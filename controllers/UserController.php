@@ -4,6 +4,7 @@ require_once 'utilClasses/Email.php';
 class UserController {
   public static $path = '/?controller=user&action=';
   public function index() {
+    Util::must_connected($this::$path.'loginPage');
     $tab = User::findAllActivated();
     $path = $this::$path . 'show&id=';
     require 'views/user/index.php';
@@ -48,6 +49,7 @@ class UserController {
       elseif ($user->verifyPassword($password)) {
         $_SESSION['USER']['id'] = $user->getId();
         $_SESSION['USER']['username'] = $user->getUsername();
+        $_SESSION['USER']['rights'] = $user->getType();
         new Alert('success', $lang['WELCOME'] . ' ' . $user->getUsername());
         Util::redirect_to('/');
       }

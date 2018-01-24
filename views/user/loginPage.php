@@ -1,4 +1,4 @@
-<h1> Sign-in</h1>
+<h1>LOGIN</h1>
 <?php global $lang ?>
 <form action="<?php echo $path ?>" method="post">
  <div class="form-group">

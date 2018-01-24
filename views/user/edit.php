@@ -3,12 +3,12 @@
 
   <div class="form-group">
     <label for="email">Email</label>
-    <input type="email" class="form-control" readonly name="EMAIL" aria-describedby="emailHelp" 
+    <input type="email" class="form-control" readonly name="EMAIL" aria-describedby="emailHelp"
     placeholder="<?php echo $lang['TYPE_EMAIL'] ?>" value="<?php echo $user->getEmail() ?>">
   </div>
  <div class="form-group">
     <label for="username"><?php echo $lang['USERNAME'] ?></label>
-    <input type="text" readonly class="form-control" name="USERNAME" 
+    <input type="text" readonly class="form-control" name="USERNAME"
     placeholder="<?php echo $lang['TYPE_USERNAME'] ?>" value="<?php echo $user->getUsername() ?>">
   </div>
 <div class="form-group">
@@ -23,5 +23,5 @@
     <label for="repeatPassword"><?php echo $lang['REPEAT_PASSWORD'] ?></label>
     <input type="password" name="confirmPassword" class="form-control" placeholder="<?php echo $lang['REPEAT_PASSWORD']?>">
   </div>
-  <button type="submit" class="btn btn-primary"><?php echo $lang['SIGNIN'] ?></button>
+  <button type="submit" class="btn btn-primary"><?php echo 'Edit' ?></button>
 </form>

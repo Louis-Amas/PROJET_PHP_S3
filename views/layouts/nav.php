@@ -29,7 +29,7 @@
                 class="btn btn-primary btn-lg " role="button" aria-pressed="true">
                 <?php echo $lang['LOGIN'] ?>
                 </a>
-                <a href="/?controller=user&action=create" 
+                <a href="/?controller=user&action=create"
                 class="btn btn-primary btn-lg" role="button" aria-pressed="true">
                 <?php echo $lang['SIGNIN'] ?>
                 </a>
@@ -44,12 +44,12 @@
                     </button>
                     <div class="dropdown-menu">
                         <a href="/?controller=user&action=show&id=<?php echo $id ?>"
-                        class="dropdown-item" role="button" aria-pressed="true">
-                            <?php echo $username ?>
+                        class="dropdown-item text-dark" role="button" aria-pressed="true">
+                            <?php echo 'My Profile' ?>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/?controller=user&action=unlogin">
-                        <?php echo $lang['UNLOGIN'] ?>
+                        <a class="dropdown-item text-dark" href="/?controller=user&action=unlogin">
+                        <?php echo 'Log-Out' ?>
                         </a>
                     </div>
                 </div>

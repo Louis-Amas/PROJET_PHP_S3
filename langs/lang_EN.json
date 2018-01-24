@@ -9,7 +9,7 @@
         { "LOGIN": "Login"},
         { "MENU": [
             { "Home" : "/"},
-            { "Users": "/?controller=user"}
+            { "Admin Panel": "/?controller=user"}
         ]},
         { "HAPPY_INSCRIPTION": "Good sign in, a confirmation email as just been sent to activate your account"},
         { "BAD_INSCRIPTION": "Bad sign in"},
