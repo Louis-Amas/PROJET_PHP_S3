@@ -26,7 +26,12 @@ class Util{
     }
     return true;
   }
-
+  public static function must_be_user($id){
+    if ($_SESSION['USER']['rights'] != 'ADM' && $_SESSION['USER']['id'] != $id){
+      new Alert('danger','You cannot acces to this page');
+      Util::redirect_to('index.php');
+    }
+  }
   public static function must_connected($path = 'index.php', $rights = 'NOR'){
     if (empty($_SESSION)){
       new Alert('danger','You must be connected in order to access this page');

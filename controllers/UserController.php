@@ -65,10 +65,7 @@ class UserController {
   }
   public function show() {
     $id = filter_input(INPUT_GET, 'id');
-    if ($_SESSION['USER']['rights'] != 'ADM' && $_SESSION['USER']['id'] != $id){
-      new Alert('danger','You cannot acces to this page');
-      Util::redirect_to('index.php');
-    }
+    Util::must_be_user($id);
     $user = User::findById($id);
     if ($user == null)
     Util::redirect_to('/');
@@ -98,6 +95,7 @@ class UserController {
   }
   public function edit() {
     $id = filter_input(INPUT_GET, 'id');
+    Util::must_be_user($id);
     $user = User::findById($id);
     $path = $this::$path . 'update&id=' . $id;
     if ($user == null)
