@@ -5,7 +5,11 @@ class UserController {
   public static $path = '/?controller=user&action=';
   public function index() {
     Util::must_connected($this::$path.'loginPage');
-    $tab = User::findAllActivated();
+    if (Util::can_acces('ADM')){
+      $tab = User::findAllActivated();
+    } else {
+      $tab = array(User::findById($_SESSION['USER']['id']));
+    }
     $path = $this::$path . 'show&id=';
     require 'views/user/index.php';
   }
