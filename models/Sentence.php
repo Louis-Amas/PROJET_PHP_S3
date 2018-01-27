@@ -21,7 +21,7 @@
           $this->sentence = $sentence;
         }
         public function setLang($lang) {
-          return $this->lang = $lang;
+          $this->lang = $lang;
         }
 
         public function findTranslation($destination){
