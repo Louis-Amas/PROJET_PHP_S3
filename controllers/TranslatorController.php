@@ -7,21 +7,28 @@ class TranslatorController {
   public static $path = '/?controller=translator&action=';
 
   public function translator(){
-    $path= $this::$path . 'translatorAction';
-    $langs = array(fr,en,es,al);//Lang::findAll();
+    $path= $this::$path . 'translatorResult';
+    $langs = Lang::findAllUsable();
+
     require 'views/translator/translator.php';
   }
 
-  public function translatorAction(){
+  public function translatorResult(){
     $sentenceS =filter_input(INPUT_POST, 'SENTENCE');
+    $langs = Lang::findAllUsable();
     $langS =filter_input(INPUT_POST, 'LANGS');
     $langT =filter_input(INPUT_POST, 'LANGT');
     $sentence = new SENTENCE('');
     $sentence->setSentence($sentenceS);
     $sentence->setLang($langS);
-    $translated = Translator::getTradByLang($sentence,$langT);
-    $returnArray = array("begin"=> array("sentence" => $sentenceS, "language" => $langS), "translated"=> array("sentence" => $translated->getSentence(), "language" => $langT));
-    Util::redirect_to($this::$path . 'translator&information='.json_encode($returnArray));
+    $origin = Sentence::findBySentenceAndLang($sentenceS,$langS);
+    $translated = 'No result';
+    if (!is_null($origin)){
+      $translated = $origin->findTranslation($langT);
+    }
+    //var_dump($translated);
+    //die;
+    require 'views/translator/translator.php';
   }
 
   public function destroy() {

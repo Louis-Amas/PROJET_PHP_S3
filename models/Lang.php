@@ -3,12 +3,13 @@
     class Lang {
         private $name;
         private $lang;
-        
+
         public function __construct($result) {
             $this->lang   = $result->LANG;
             $this->name   = $result->NAME;
         }
-        
+
+
         public static function findByAcro($acro) {
             $pdo = MyPdo::getConnection();
             $sql = 'SELECT *  FROM LANG WHERE LANG = :lang';
@@ -63,12 +64,39 @@
             }
         }
 
+        public static function findAllUsable() {
+            $pdo = MyPdo::getConnection();
+            $sql = 'SELECT *  FROM LANG WHERE LANG != \'basic\' ' ;
+            $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            try
+            {
+                $stmt->execute(); // Exécution de la requête.
+                if ($stmt->rowCount() == 0) {
+                    return null;
+                }
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
+                $list = [];
+                while ($result = $stmt->fetch())
+                {
+                    $list[] = new Lang($result);
+                }
+                return $list;
+            }
+            catch (PDOException $e)
+            {
+                // Affichage de l'erreur et rappel de la requête.
+                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+                echo 'Requête : ', $sql, PHP_EOL;
+                exit();
+            }
+        }
+
         public static function insert($lang) {
             $pdo = MyPdo::getConnection();
-            $sql = 'INSERT INTO LANG(LANG, NAME) 
+            $sql = 'INSERT INTO LANG(LANG, NAME)
             VALUES(:acro, :name)';
-            $stmt = $pdo->prepare($sql); 
-            
+            $stmt = $pdo->prepare($sql);
+
             $parameters = array(':acro' => $lang->lang, ':acro' => $sentence->name );
 
             try {
@@ -84,6 +112,34 @@
                 exit();
             }
         }
+        public function __toString(){
+          return $this->lang;
+        }
+
+    public function getName()
+    {
+        return $this->name;
     }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
+}
 
 ?>

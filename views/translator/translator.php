@@ -1,25 +1,10 @@
 <?php global $lang ?>
-<?php $information = "{}";
-if ($_GET['information']) {
-  $information = $_GET['information'];
-} ?>
-<script>
-$( document ).ready(function() {
-  var informations = JSON.parse('<?= $information?>');
-  if (informations.begin && informations.translated) {
-    $('select[name="LANGS"]').val(informations.begin.language);
-    $('select[name="LANGT"]').val(informations.translated.language);
-    $('textarea[name="SENTENCE"]').val(informations.begin.sentence);
-    $('textarea[name="TRANSLATED"]').val(informations.translated.sentence);
-  }
-});
-</script>
 <form action="<?= $path ?>" method="post">
   <div class="form-row">
     <div class="col">
       <select class="form-control" name="LANGS">
         <?php foreach($langs as $lang) { ?>
-          <option><?=$lang?></option>;
+          <option <?php if ($langS == $lang){echo 'selected';}?> value=<?=$lang->getLang()?>><?=$lang->getName()?></option>;
         <?php } ?>
       </select>
     </div>
@@ -27,19 +12,19 @@ $( document ).ready(function() {
       <input type="submit" class="btn btn-info" value="Translate">
     </div>
     <div class="col">
-      <select class="form-control" name="LANGT">
+      <select class="form-control" name="LANGT" data-live-search="true">
         <?php foreach($langs as $lang) { ?>
-          <option><?=$lang?></option>;
+          <option  <?php if ($langT == $lang){echo 'selected';} ?> value=<?=$lang->getLang()?>><?=$lang->getName()?></option>;
         <?php } ?>
       </select>
     </div>
   </div>
   <div class="form-row">
     <div class="col">
-      <textarea class="form-control" style="resize: none;" rows="5" name="SENTENCE"></textarea>
+      <textarea class="form-control" style="resize: none;" rows="5" name="SENTENCE"><?php echo $sentenceS ?></textarea>
     </div>
     <div class="col">
-      <textarea class="form-control" style="resize: none;" rows="5" name="TRANSLATED" readonly></textarea>
+      <textarea class="form-control" style="resize: none;" rows="5" name="TRANSLATED" readonly><?php echo $translated; ?></textarea>
     </div>
   </div>
 </form>

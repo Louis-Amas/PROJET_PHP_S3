@@ -101,7 +101,7 @@ class UserController {
     $id = filter_input(INPUT_GET, 'id');
     Util::must_be_user($id);
     $user = User::findById($id);
-    $roles = array('ADM'=>'Administrator','PRE'=>'Premium','NOR'=>'Regular');
+    $roles = array('ADM'=>'Administrator','PRE'=>'Premium','NOR'=>'Regular','TRA'=>'Translator');
     $path = $this::$path . 'update&id=' . $id;
     if ($user == null)
     self::index();

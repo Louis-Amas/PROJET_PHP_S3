@@ -23,6 +23,90 @@
         public function setLang($lang) {
           return $this->lang = $lang;
         }
+
+        public function findTranslation($destination){
+          $pdo = MyPdo::getConnection();
+          $sql = 'SELECT *  FROM SENTENCE WHERE SENTENCE_ID = :id AND LANG= :lang';
+          $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+          $stmt->bindValue('id', $this->id, PDO::PARAM_INT); // Lie les paramètres de manière sécurisée.
+          $stmt->bindValue('lang', $destination, PDO::PARAM_STR);
+          try
+          {
+              $stmt->execute(); // Exécution de la requête.
+              if ($stmt->rowCount() == 0) {
+                  return null;
+              }
+              $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+              while ($result = $stmt->fetch())
+              {
+                  return new Sentence($result);
+              }
+          }
+          catch (PDOException $e)
+          {
+              // Affichage de l'erreur et rappel de la requête.
+              echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+              echo 'Requête : ', $sql, PHP_EOL;
+              exit();
+          }
+        }
+
+        public static function findBySentenceAndLang($string,$lang){
+          $pdo = MyPdo::getConnection();
+          $sql = 'SELECT *  FROM SENTENCE WHERE LANG= :lang AND SENTENCE= :sentence';
+          $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+          $stmt->bindValue('lang', $lang, PDO::PARAM_STR); // Lie les paramètres de manière sécurisée.
+          $stmt->bindValue('sentence', $string, PDO::PARAM_STR);
+          try
+          {
+              $stmt->execute(); // Exécution de la requête.
+              if ($stmt->rowCount() == 0) {
+                  return null;
+              }
+              $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+              while ($result = $stmt->fetch())
+              {
+                  return new Sentence($result);
+              }
+          }
+          catch (PDOException $e)
+          {
+              // Affichage de l'erreur et rappel de la requête.
+              echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+              echo 'Requête : ', $sql, PHP_EOL;
+              exit();
+          }
+        }
+
+        public static function findByLang($lang){
+          $pdo = MyPdo::getConnection();
+          $sql = 'SELECT *  FROM SENTENCE WHERE LANG= :lang';
+          $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+          $stmt->bindValue('lang', $lang, PDO::PARAM_STR); // Lie les paramètres de manière sécurisée.
+          try
+          {
+              $stmt->execute(); // Exécution de la requête.
+              if ($stmt->rowCount() == 0) {
+                  return null;
+              }
+              $stmt->setFetchMode(PDO::FETCH_OBJ);
+              $list = [];
+              while ($result = $stmt->fetch())
+              {
+                  $list[] = new Sentence($result);
+              }
+              return $list;
+          }
+          catch (PDOException $e)
+          {
+              // Affichage de l'erreur et rappel de la requête.
+              echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+              echo 'Requête : ', $sql, PHP_EOL;
+              exit();
+          }
+        }
         public static function findById($id) {
             $pdo = MyPdo::getConnection();
             $sql = 'SELECT *  FROM SENTENCE WHERE SENTENCE_ID = :id';
@@ -97,6 +181,9 @@
                 echo 'Requête : ', $sql, PHP_EOL;
                 exit();
             }
+        }
+        public function __toString(){
+          return $this->sentence;
         }
     }
 

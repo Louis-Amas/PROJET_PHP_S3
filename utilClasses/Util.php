@@ -20,6 +20,9 @@ class Util{
       if ($rights == 'PRE' && $_SESSION['USER']['rights'] == 'NOR'){
         return false;
       }
+      elseif ($rights == 'TRA' && $_SESSION['USER']['rights'] =='NOR' || $_SESSION['USER']['rights'] =='PRE'){
+        return false;
+      }
       elseif ($rights == 'ADM') {
         return false;
       }
