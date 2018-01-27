@@ -6,6 +6,10 @@ class TranslatorController {
 
   public static $path = '/?controller=translator&action=';
 
+  public function index() {
+      $this->translator();
+  }
+
   public function translator(){
     $path= $this::$path . 'translatorResult';
     $langs = Lang::findAllUsable();
