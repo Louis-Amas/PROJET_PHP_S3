@@ -19,7 +19,10 @@
         public function newSentence(){
           $lang = filter_input(INPUT_POST,"LANG");
           $sentenceToAdd = filter_input(INPUT_POST,"SENTENCE");
-          // Insertion new 
+          $newSentence = new Sentence(null);
+          $newSentence->setLang($lang);
+          $newSentence->setSentence($sentenceToAdd);
+          Sentence::insertNew($newSentence);
 
           Util::redirect_to('/?controller=sentence');
         }

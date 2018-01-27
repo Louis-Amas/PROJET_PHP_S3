@@ -219,7 +219,7 @@
 		    FROM SENTENCE s
     		WHERE s.SENTENCE_ID IN (SELECT s.SENTENCE_ID
     								FROM SENTENCE s
-    								WHERE s.LANG = "basic");
+    								WHERE s.LANG = "basic")';
     		$stmt = $pdo->prepare($sql); // Préparation d'une requête.
             try
             {
@@ -234,7 +234,7 @@
                     $list[] = new Sentence($result);
                 }
                 foreach ($list as $sentence) {
-  					$Map[$sentence->getLang()]= $sentence->getSentence(); 
+  					$Map[$sentence->getLang()]= $sentence->getSentence();
   				}
   				return $Map;
             }
@@ -250,4 +250,5 @@
   	    public function __toString(){
         	return $this->sentence;
         }
+      }
 ?>
