@@ -3,7 +3,7 @@
 require 'controllers/UserController.php';
 require 'controllers/PageController.php';
 require 'controllers/SentenceController.php';
-
+require 'controllers/TranslatorController.php';
 class App {
     /*
      * Correspond à la base de l'application les routes

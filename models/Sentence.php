@@ -4,13 +4,25 @@
         private $id;
         private $lang;
         private $sentence;
-        
-        public function __construct($result) {
+
+      public function __construct($result) {
             $this->id   = $result->SENTENCE_ID;
             $this->lang = $result->LANG;
             $this->sentence = $result->SENTENCE;
         }
-        
+
+        public function getSentence() {
+          return $this->sentence;
+        }
+        public function getLang() {
+          return $this->lang;
+        }
+        public function setSentence($sentence) {
+          $this->sentence = $sentence;
+        }
+        public function setLang($lang) {
+          return $this->lang = $lang;
+        }
         public static function findById($id) {
             $pdo = MyPdo::getConnection();
             $sql = 'SELECT *  FROM SENTENCE WHERE SENTENCE_ID = :id';
@@ -67,10 +79,10 @@
 
         public static function insert($sentence) {
             $pdo = MyPdo::getConnection();
-            $sql = 'INSERT INTO SENTENCE(SENTENCE, LANG) 
+            $sql = 'INSERT INTO SENTENCE(SENTENCE, LANG)
             VALUES(:sentence, :lang)';
-            $stmt = $pdo->prepare($sql); 
-            
+            $stmt = $pdo->prepare($sql);
+
             $parameters = array(':sentence' => $sentence->sentence, ':lang' => $sentence->lang );
 
             try {
