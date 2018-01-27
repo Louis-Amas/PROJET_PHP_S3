@@ -17,6 +17,10 @@
         public function getLang() {
           return $this->lang;
         }
+        public function getID()
+        {
+          return $this->id;
+        }
         public function setSentence($sentence) {
           $this->sentence = $sentence;
         }
