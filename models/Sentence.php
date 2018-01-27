@@ -161,30 +161,55 @@
             }
         }
 
-        public static function insert($sentence) {
-            $pdo = MyPdo::getConnection();
-            $sql = 'INSERT INTO SENTENCE(SENTENCE, LANG)
-            VALUES(:sentence, :lang)';
-            $stmt = $pdo->prepare($sql);
+  		public function insertNew($sentence) {
+    		$pdo = MyPdo::getConnection();
+    		$sql = 'INSERT INTO SENTENCE(LANG, SENTENCE)
+    		SELECT l.LANG, :sentence
+    		FROM LANG l
+    		WHERE l.LANG = :langS';
+    		$stmt = $pdo->prepare($sql); // Préparation d'une requête
+    		$stmt->bindValue('langS', $sentence->getLang(), PDO::PARAM_STR);
+    		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);
+    		$params =  array(':langS' => $sentence->getLang(), ':sentence' => $sentence->getSentence());
+    		try {
+    			$stmt->execute($parameters);
+    			return true;
+		    } catch (PDOException $e) {
+      			//A supprimer en développement
+      			//return false;
+      			// Affichage de l'erreur et rappel de la requête.
+      			echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+      			echo 'Requête : ', $sql, PHP_EOL;
+      			exit();
+    		}
+		}
 
-            $parameters = array(':sentence' => $sentence->sentence, ':lang' => $sentence->lang );
+  		public function insertAlreadyExist($sentence, $translation) {
+    		$pdo = MyPdo::getConnection();
+   			 $sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
+		    SELECT s.SENTENCE_ID, :langT, :translation
+		    FROM SENTENCE s
+    		WHERE s.SENTENCE = :sentence';
+    		$stmt = $pdo->prepare($sql); // Préparation d'une requête
+    		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);
+    		$stmt->bindValue('translation', $translation->getSentence(), PDO::PARAM_STR);
+    		$stmt->bindValue('langT', $translation->getLang(), PDO::PARAM_STR);
+    		$params =  array(':langT' => $translation->getLang(),':sentence' => $sentence->getSentence(), ':translation' => $translation->getSentence());
+    		try {
+    			$stmt->execute($parameters);
+    			return true;
 
-            try {
-                $stmt->execute($parameters);
-                return true;
+    		} catch (PDOException $e) {
+    			//A supprimer en développement
+    			//return false;
+    			// Affichage de l'erreur et rappel de la requête.
+    			echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+    			echo 'Requête : ', $sql, PHP_EOL;
+    			exit();
+    		}
+  		}
 
-            } catch (PDOException $e) {
-                //A supprimer en développement
-                //return false;
-                // Affichage de l'erreur et rappel de la requête.
-                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
-                echo 'Requête : ', $sql, PHP_EOL;
-                exit();
-            }
+  	    public function __toString(){
+        	return $this->sentence;
         }
-        public function __toString(){
-          return $this->sentence;
-        }
-    }
-
 ?>
