@@ -25,7 +25,7 @@
           $this->sentence = $sentence;
         }
         public function setLang($lang) {
-          return $this->lang = $lang;
+          $this->lang = $lang;
         }
 
         public function findTranslation($destination){
@@ -165,30 +165,89 @@
             }
         }
 
-        public static function insert($sentence) {
-            $pdo = MyPdo::getConnection();
-            $sql = 'INSERT INTO SENTENCE(SENTENCE, LANG)
-            VALUES(:sentence, :lang)';
-            $stmt = $pdo->prepare($sql);
+  		public static function insertNew($sentence) {
+    		$pdo = MyPdo::getConnection();
+    		$sql = 'INSERT INTO SENTENCE(LANG, SENTENCE)
+    		SELECT l.LANG, :sentence
+    		FROM LANG l
+    		WHERE l.LANG = :langS';
+    		$stmt = $pdo->prepare($sql); // Préparation d'une requête
+    		$stmt->bindValue('langS', $sentence->getLang(), PDO::PARAM_STR);
+    		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);
+    		$params =  array(':langS' => $sentence->getLang(), ':sentence' => $sentence->getSentence());
+    		try {
+    			$stmt->execute($parameters);
+    			return true;
+		    } catch (PDOException $e) {
+      			//A supprimer en développement
+      			//return false;
+      			// Affichage de l'erreur et rappel de la requête.
+      			echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+      			echo 'Requête : ', $sql, PHP_EOL;
+      			exit();
+    		}
+		}
 
-            $parameters = array(':sentence' => $sentence->sentence, ':lang' => $sentence->lang );
+  		public static function insertAlreadyExist($sentence, $translation) {
+    		$pdo = MyPdo::getConnection();
+   			$sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
+		    SELECT s.SENTENCE_ID, :langT, :translation
+		    FROM SENTENCE s
+    		WHERE s.SENTENCE = :sentence';
+    		$stmt = $pdo->prepare($sql); // Préparation d'une requête
+    		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);
+    		$stmt->bindValue('translation', $translation->getSentence(), PDO::PARAM_STR);
+    		$stmt->bindValue('langT', $translation->getLang(), PDO::PARAM_STR);
+    		$params =  array(':langT' => $translation->getLang(),':sentence' => $sentence->getSentence(), ':translation' => $translation->getSentence());
+    		try {
+    			$stmt->execute($parameters);
+    			return true;
 
-            try {
-                $stmt->execute($parameters);
-                return true;
+    		} catch (PDOException $e) {
+    			//A supprimer en développement
+    			//return false;
+    			// Affichage de l'erreur et rappel de la requête.
+    			echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+    			echo 'Requête : ', $sql, PHP_EOL;
+    			exit();
+    		}
+  		}
 
-            } catch (PDOException $e) {
-                //A supprimer en développement
-                //return false;
+  		public static function getAllLangFromBasicToLang() {
+  			$pdo = MyPdo::getConnection();
+   			$sql = 'SELECT *
+		    FROM SENTENCE s
+    		WHERE s.SENTENCE_ID IN (SELECT s.SENTENCE_ID
+    								FROM SENTENCE s
+    								WHERE s.LANG = "basic");
+    		$stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            try
+            {
+                $stmt->execute(); // Exécution de la requête.
+                if ($stmt->rowCount() == 0) {
+                    return null;
+                }
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
+                $list = [];
+                while ($result = $stmt->fetch())
+                {
+                    $list[] = new Sentence($result);
+                }
+                foreach ($list as $sentence) {
+  					$Map[$sentence->getLang()]= $sentence->getSentence(); 
+  				}
+  				return $Map;
+            }
+            catch (PDOException $e)
+            {
                 // Affichage de l'erreur et rappel de la requête.
                 echo 'Erreur : ', $e->getMessage(), PHP_EOL;
                 echo 'Requête : ', $sql, PHP_EOL;
                 exit();
             }
-        }
-        public function __toString(){
-          return $this->sentence;
-        }
-    }
+  		}
 
+  	    public function __toString(){
+        	return $this->sentence;
+        }
 ?>
