@@ -4,15 +4,15 @@
         private $id;
         private $sentence_id;
         private $lang;
-        private $state;
+        private $status;
         private $author;
         
         public function __construct($result) {
             $this->id          = $result->TOTRANSLATE_ID;
             $this->sentence_id = $result->SENTENCE_ID;
             $this->lang        = $result->LANG;
-            $this->state       = $result->STATE;
-            $this->author      = $result->AUTHOR; 
+            $this->status      = $result->STATUS;
+            $this->author      = $result->AUTHOR_ID; 
         }
         
         public static function findByUserId($userId) {
@@ -72,7 +72,7 @@
         public static function insert($sentence_id, $author, $lang) {
             $pdo = MyPdo::getConnection();
             $sql = 'INSERT INTO TOTRANSLATE(SENTENCE_ID, LANG, STATE, AUTHOR) 
-            VALUES(:sentence_id, :lang, ATT, :author )';
+            VALUES(:sentence_id, :lang, "WAITING", :author )';
             $stmt = $pdo->prepare($sql);
             $parameters =  array(':sentence_id' => $sentence_id, ':author' => $author, ':lang' => $lang );
             try {
