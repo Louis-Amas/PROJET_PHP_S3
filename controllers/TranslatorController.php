@@ -37,6 +37,10 @@ class TranslatorController {
   }
 
   public function showUserTranslation() {
+    if(Util::can_acces('TRA')){
+      var_dump($_POST);
+    }
+    $listLangs = Lang::findAll();
     $listAsk = ToTranslate::findByUserId($_SESSION['USER']['id']);
     if(Util::can_acces('TRA')){
       $listAll = ToTranslate::findAll();

@@ -36,6 +36,11 @@
                 </a>
               </li>
             <?php } ?>
+            <li class="nav-item">
+              <a class="nav-link" href="/?controller=page&action=legal">
+                <?php echo $lang['LEGAL_TEXT_0'];?>
+              </a>
+            </li>
 
           </ul>
 
