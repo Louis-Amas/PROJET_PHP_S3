@@ -108,7 +108,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-warning"> <strong> Note: </strong><?php echo text('EDITING_THE_BASIC_LANGUAGE_CAN_BREAK_THE_SITE!_PLEASE_DO_NOT_EDIT_IT_IF_YOU_DONT_KNOW_WHAT_ARE_YOU_DOING!') ?> </div>
+        <div class="alert alert-warning"> <strong> Note: </strong><?php echo text('WARNING_ADD_TRANSLATION') ?> </div>
         <form action="<?php echo $path ?>" method="post" id='form'>
           <div class="form-group d-none">
             <label for="staticEmail" class="col-sm-2 col-form-label"><?php echo text('Sentence_ID') ?></label>
