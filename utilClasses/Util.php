@@ -12,6 +12,14 @@ class Util{
     return $str;
   }
 
+  public static function back(){
+    ?>
+    <script>
+      window.history.back();
+    </script>
+    <?php
+  }
+
   public static function can_acces($rights){
     if (empty($_SESSION) && $rights != null) {
       return false;
@@ -42,6 +50,7 @@ class Util{
     }
     elseif (!self::can_acces($rights)){
       new Alert('danger','You don\'t have enough rights to acces this page');
+      self::redirect_to($path);
     }
   }
 

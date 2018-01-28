@@ -28,6 +28,10 @@
           $this->lang = $lang;
         }
 
+        public function setID($id){
+          $this->id = $id;
+        }
+
         public function findTranslation($destination){
           $pdo = MyPdo::getConnection();
           $sql = 'SELECT *  FROM SENTENCE WHERE SENTENCE_ID = :id AND LANG= :lang';
@@ -187,6 +191,31 @@
       			exit();
     		}
 		}
+
+      public static function insertOrUpdateAccordingID($sentence){
+        if (is_null($sentence->getID()) || empty($sentence->getID())){
+          return false;
+        }
+        $pdo = MyPdo::getConnection();
+        $sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
+                VALUES (:id,:lang,:sentence)
+                ON DUPLICATE KEY UPDATE SENTENCE=":SENTENCE"';
+
+        $stmt = $pdo->prepare($sql); // Préparation d'une requête
+    		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);
+    		$stmt->bindValue('id', $sentence->getID(), PDO::PARAM_INT);
+    		$stmt->bindValue('lang', $sentence->getLang(), PDO::PARAM_STR);
+        $params =  array(':sentence' => $sentence->getSentence(),':id' => $sentence->getID(), ':lang' => $sentence->getLang());
+        try {
+    			$stmt->execute($params);
+    			return true;
+
+    		} catch (PDOException $e) {
+    			echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+    			echo 'Requête : ', $sql, PHP_EOL;
+    			exit();
+    		}
+      }
 
   		public static function insertAlreadyExist($sentence, $translation) {
     		$pdo = MyPdo::getConnection();
