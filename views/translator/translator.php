@@ -9,7 +9,7 @@
       </select>
     </div>
     <div class="col-x-4">
-      <input type="submit" class="btn btn-info" value="Translate">
+      <input type="submit" class="btn btn-info" value="<?php echo text('TRANSLATE') ?>">
     </div>
     <div class="col">
       <select class="form-control" name="LANGT" data-live-search="true">
