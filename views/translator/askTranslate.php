@@ -1,7 +1,7 @@
 <form action="<?php  echo $path ?>" method="post">
     <div class="form-row"> 
         <div class="form-group">     
-            <label for="langs"> Lang source </label>   
+            <label for="langs"><?php echo text('LANG_SOURCE') ?></label>   
             <select class="form-control" name="LANGS">
                 <?php foreach($langs as $lang) { ?>
                 <option value=<?= $lang->getLang()?>> <?=$lang->getName()?></option>

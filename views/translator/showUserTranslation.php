@@ -11,7 +11,6 @@
     </tr>
   </thead>
   <tbody>
-
     <?
     foreach ($listAsk as $key => $value) { ?>
     <tr>

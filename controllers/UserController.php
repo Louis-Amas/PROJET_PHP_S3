@@ -144,13 +144,13 @@ class UserController {
       Util::redirect_to($this::$path . 'create');
     }
     else if (User::insert($user)) {
-      new Alert('success', $lang['HAPPY_INSCRIPTION'].'EMAIL :'.$email);
+      new Alert('success', text('HAPPY_INSCRIPTION').'EMAIL :'.$email);
       Email::send_confirmation_email($email,'');
       #send_confirmation_email($email,User::findByEmail($email)->getSalt());
       Util::redirect_to('/');
     }
     else {
-      new Alert('danger', $lang['BAD_INSCRIPTION'].': User already exist');
+      new Alert('danger', text('BAD_INSCRIPTION').': User already exist');
       Util::redirect_to($this::$path . 'create' );
     }
   }
@@ -163,7 +163,7 @@ class UserController {
     $id = filter_input(INPUT_GET, 'id');
     $user = User::findById($id);
     if ($user == null) {
-      new Alert('danger', $lang['USER_NOT_EXIST']);
+      new Alert('danger', text('USER_NOT_EXIST'));
       Util::redirect_to($this::$path . 'index');
     }
     else {
@@ -184,7 +184,7 @@ class UserController {
             $mode = 1;
         }
         elseif (!empty($newPassword) && $newPassword != $newPasswordConfirm){
-          new Alert('danger', $lang['PASS_DOESNT_MATCH'] . ' !');
+          new Alert('danger', text('PASS_DOESNT_MATCH') . ' !');
           Util::redirect_to($_SERVER['HTTP_REFERER']);
           return;
         }
@@ -193,7 +193,7 @@ class UserController {
           $_SESSION['USER']['username'] = $user->getUsername();
           $_SESSION['USER']['rights'] = $user->getType();
         }
-        new Alert('success', $lang['SUCCESSFULL_UPDATE']);
+        new Alert('success', text('SUCCESSFULL_UPDATE'));
         Util::redirect_to($this::$path . 'show&id='. $id);
       }
       elseif (empty($oldPassword)){
@@ -201,7 +201,7 @@ class UserController {
         Util::redirect_to($this::$path . 'edit&id='. $id);
       }
       else {
-        new Alert('danger', $lang['ERROR_WRONG_PASSWORD']);
+        new Alert('danger', text('ERROR_WRONG_PASSWORD'));
         Util::redirect_to($this::$path . 'edit&id='. $id);
       }
     }
