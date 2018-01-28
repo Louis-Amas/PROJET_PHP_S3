@@ -8,7 +8,7 @@ require 'controllers/TranslatorController.php';
 
 function text($text){
   if(empty($lang))
-    $lang = Util::load_lang('fr.FR');
+    $lang = Util::load_lang($_SESSION['LANG']);
   if ($lang[$text]){
     return $lang[$text];
   } else {
