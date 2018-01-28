@@ -17,11 +17,19 @@
         public function getLang() {
           return $this->lang;
         }
+        public function getID()
+        {
+          return $this->id;
+        }
         public function setSentence($sentence) {
           $this->sentence = $sentence;
         }
         public function setLang($lang) {
           $this->lang = $lang;
+        }
+
+        public function setID($id){
+          $this->id = $id;
         }
 
         public function findTranslation($destination){
@@ -161,7 +169,7 @@
             }
         }
 
-  		public function insertNew($sentence) {
+  		public static function insertNew($sentence) {
     		$pdo = MyPdo::getConnection();
     		$sql = 'INSERT INTO SENTENCE(LANG, SENTENCE)
     		SELECT l.LANG, :sentence
@@ -184,9 +192,34 @@
     		}
 		}
 
-  		public function insertAlreadyExist($sentence, $translation) {
+      public static function insertOrUpdateAccordingID($sentence){
+        if (is_null($sentence->getID()) || empty($sentence->getID())){
+          return false;
+        }
+        $pdo = MyPdo::getConnection();
+        $sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
+                VALUES (:id,:lang,:sentence)
+                ON DUPLICATE KEY UPDATE SENTENCE=":SENTENCE"';
+
+        $stmt = $pdo->prepare($sql); // Préparation d'une requête
+    		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);
+    		$stmt->bindValue('id', $sentence->getID(), PDO::PARAM_INT);
+    		$stmt->bindValue('lang', $sentence->getLang(), PDO::PARAM_STR);
+        $params =  array(':sentence' => $sentence->getSentence(),':id' => $sentence->getID(), ':lang' => $sentence->getLang());
+        try {
+    			$stmt->execute($params);
+    			return true;
+
+    		} catch (PDOException $e) {
+    			echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+    			echo 'Requête : ', $sql, PHP_EOL;
+    			exit();
+    		}
+      }
+
+  		public static function insertAlreadyExist($sentence, $translation) {
     		$pdo = MyPdo::getConnection();
-   			 $sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
+   			$sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
 		    SELECT s.SENTENCE_ID, :langT, :translation
 		    FROM SENTENCE s
     		WHERE s.SENTENCE = :sentence';
@@ -207,6 +240,40 @@
     			echo 'Requête : ', $sql, PHP_EOL;
     			exit();
     		}
+  		}
+
+  		public static function getAllLangFromBasicToLang() {
+  			$pdo = MyPdo::getConnection();
+   			$sql = 'SELECT *
+		    FROM SENTENCE s
+    		WHERE s.SENTENCE_ID IN (SELECT s.SENTENCE_ID
+    								FROM SENTENCE s
+    								WHERE s.LANG = "basic")';
+    		$stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            try
+            {
+                $stmt->execute(); // Exécution de la requête.
+                if ($stmt->rowCount() == 0) {
+                    return null;
+                }
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
+                $list = [];
+                while ($result = $stmt->fetch())
+                {
+                    $list[] = new Sentence($result);
+                }
+                foreach ($list as $sentence) {
+  					$Map[$sentence->getLang()]= $sentence->getSentence();
+  				}
+  				return $Map;
+            }
+            catch (PDOException $e)
+            {
+                // Affichage de l'erreur et rappel de la requête.
+                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+                echo 'Requête : ', $sql, PHP_EOL;
+                exit();
+            }
   		}
 
   	    public function __toString(){

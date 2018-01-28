@@ -97,7 +97,7 @@
             VALUES(:acro, :name)';
             $stmt = $pdo->prepare($sql);
 
-            $parameters = array(':acro' => $lang->lang, ':acro' => $sentence->name );
+            $parameters = array(':acro' => $lang->getLang(), ':name' => $lang->getName() );
 
             try {
                 $stmt->execute($parameters);
