@@ -6,13 +6,13 @@
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="true" name='ONLYMISSING' id="defaultCheck1">
       <label class="form-check-label" for="defaultCheck1">
-        <?php echo text('SEE_ONLY_SENTENCES_WITH_MISSING_TRANSLATION') ?>
+        <?php echo text('SEE_MISSING_TRANSLATION') ?>
       </label>
     </div>
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="true" name='ONLYBASIC' id="defaultCheck1">
       <label class="form-check-label" for="defaultCheck1">
-        <?php echo text('SEE_ONLY_BASIC_SENTENCES_(INTERNAL_TRANSLATION)') ?>
+        <?php echo text('SEE_ONLY_BASIC_SENTENCES') ?>
       </label>
     </div>
     <div class="form-group">
@@ -75,7 +75,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p class="text-danger"><?php echo text('BE_SURE_THAT_THERE_IS_NO_AVAILABLE_TRANSLATION_FOR_THIS_SENTENCE_BEFORE_ADDING_A_NEW_ONE!') ?></p>
+        <p class="text-danger"><?php echo text('WARNING_ADDING_TRAD') ?></p>
         <form action="<?php echo $path ?>" method="post">
           <div class="form-group">
             <select class="form-control" name="LANG">
@@ -182,7 +182,7 @@ $('#addTranslation').on('shown.bs.modal', function (event) {
         </form>
       <?php }else{?>
         <div class="alert alert-danger" role="alert">
-          <?php echo text('YOU_MUST_BE_AN_ADMINISTRATOR_IN_ORDER_TO_ADD_A_LANGAGE') ?>
+          <?php echo text('MUST_BE_ADMINISTRATOR') ?>
         </div>
       <?php } ?>
       </div>
