@@ -169,6 +169,33 @@
             }
         }
 
+        public static function findAllInternal() {
+            $pdo = MyPdo::getConnection();
+            $sql = 'SELECT *  FROM SENTENCE S1, SENTENCE S2 WHERE S1.LANG = "basic" and S2.SENTENCE_ID = S1.SENTENCE_ID';
+            $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            try
+            {
+                $stmt->execute(); // Exécution de la requête.
+                if ($stmt->rowCount() == 0) {
+                    return null;
+                }
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
+                $list = [];
+                while ($result = $stmt->fetch())
+                {
+                    $list[] = new Sentence($result);
+                }
+                return $list;
+            }
+            catch (PDOException $e)
+            {
+                // Affichage de l'erreur et rappel de la requête.
+                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+                echo 'Requête : ', $sql, PHP_EOL;
+                exit();
+            }
+        }
+
   		public static function insertNew($sentence) {
     		$pdo = MyPdo::getConnection();
     		$sql = 'INSERT INTO SENTENCE(LANG, SENTENCE)

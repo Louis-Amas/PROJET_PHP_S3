@@ -1,11 +1,42 @@
 <?php global $lang ?>
+
+<div class="card card-body">
+  <h5> Filters: </h5>
+  <form method="post">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="true" name='ONLYMISSING' id="defaultCheck1">
+      <label class="form-check-label" for="defaultCheck1">
+        See only sentences with missing translation
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="true" name='ONLYBASIC' id="defaultCheck1">
+      <label class="form-check-label" for="defaultCheck1">
+        See only 'Basic' sentences (internal translation)
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Language selection</label>
+      <select multiple class="form-control" id="exampleFormControlSelect2" name ="LANGUAGESSELECTED[]">
+        <?php
+        foreach ($allLangs as $key => $lang) {
+          echo '<option value="'.$lang->getLang().'">'.ucfirst($lang->getName()).'</option>';
+        }
+        ?>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply</button>
+  </form>
+</div>
+
+
 <table class="table table-hover table-bordered">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
       <?php
-      foreach ($listLangs as $key => $value) {
-        echo '<th class="text-center" scope="col">'.ucfirst($value->getName()).'</th>';
+      foreach ($listLangs as $index => $langVal) {
+        echo '<th class="text-center" scope="col">'.ucfirst($langVal->getName()).'</th>';
       }
       ?>
       <th class="text-center" scope="col">
@@ -29,7 +60,7 @@
     <?php } ?>
     <tr class="bg-success">
       <th scope="row">  </th>
-      <td class="text-center"  data-toggle="modal" data-target="#addSentence" colspan= <?php echo '"'.count($listLangs).'"'?>> <button type="button" class="btn btn-dark">Add a new sentence</button> </td>
+      <td class="text-center"  data-toggle="modal" data-target="#addSentence" colspan= <?php echo '"'.(count($listLangs) + 1).'"'?>> <button type="button" class="btn btn-dark">Add a new sentence</button> </td>
     </tr>
   </tbody>
 </table>

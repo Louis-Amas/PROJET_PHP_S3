@@ -6,18 +6,49 @@
         public static $path = '/?controller=sentence&action=';
 
         public function index() {
-            Util::must_connected('/','TRA');
-            $path= $this::$path . 'newSentence';
-            $listLangs = Lang::findAll();
+          $filterMissing = filter_input(INPUT_POST,'ONLYMISSING');
+          $filterBasic = filter_input(INPUT_POST,'ONLYBASIC');
+          $filterLanguages = $_POST['LANGUAGESSELECTED'];
+          Util::must_connected('/','TRA');
+          $path= $this::$path . 'actionSentence';
+          $allLangs = Lang::findAll();
+          if(!empty($filterLanguages)){
+            foreach ($allLangs as $key => $value) {
+              if(in_array($value->getLang(),$filterLanguages)){
+                $listLangs[] =$value;
+              }
+            }
+          } else {
+            $listLangs = $allLangs;
+          }
+
+
+          if (empty($filterBasic)){
             $allSentences = Sentence::findAll();
-            $listSentencesByID = array();
-            foreach ($allSentences as $key => $value) {
+          } else {
+            $allSentences = Sentence::findAllInternal();
+          }
+
+          $listSentencesByID = array();
+
+          foreach ($allSentences as $key => $value) {
+            if(empty($filterLanguages) || in_array($value->getLang(),$filterLanguages)){
               $listSentencesByID[$value->getId()][$value->getLang()] = $value;
             }
-            require 'views/sentence/viewall.php';
+          }
+
+          if(!empty($filterMissing)){
+            foreach ($listSentencesByID as $key => $value) {
+              if (count($value) == count($listLangs)){
+                unset($listSentencesByID[$key]);
+              }
+            }
+          }
+
+          require 'views/sentence/viewall.php';
         }
 
-        public function newSentence(){
+        public function actionSentence(){
           Util::must_connected('/','TRA');
           $newlanguagecode = filter_input(INPUT_POST,"LANGUAGECODE");
           $newlanguagename = filter_input(INPUT_POST,"LANGUAGENAME");
