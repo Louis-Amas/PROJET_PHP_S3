@@ -42,20 +42,20 @@ class TranslatorController {
   }
   /*
    *   Affiche la vue de demande de traduction
-   *  
-   * 
-   * 
+   *
+   *
+   *
    */
   public function askForTranslate() {
     Util::must_connected('/?controller=user&action=loginPage');
-    Util::can_access('PRE');
+    Util::can_acces('PRE');
     $path = $this::$path . 'askForTranslateAction';
     $langs = Lang::findAllUsable();
     require 'views/translator/askTranslate.php';
   }
   /*
    * Action de la vue demande de traduction verifier les données.
-   * 
+   *
    */
   public function askForTranslateAction() {
     Util::must_connected('/?controller=user&action=loginPage');
@@ -70,7 +70,7 @@ class TranslatorController {
       Util::redirect_to($this::$path . 'translator');
     }
     else {
-      new Alert('danger', 'ASK_TRANSLATE_BAD'); 
+      new Alert('danger', 'ASK_TRANSLATE_BAD');
       Util::redirect_to($this::$path . 'askForTranslate');
     }
   }

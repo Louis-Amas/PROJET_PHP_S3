@@ -199,7 +199,7 @@
         $pdo = MyPdo::getConnection();
         $sql = 'INSERT INTO SENTENCE(SENTENCE_ID, LANG, SENTENCE)
                 VALUES (:id,:lang,:sentence)
-                ON DUPLICATE KEY UPDATE SENTENCE=":SENTENCE"';
+                ON DUPLICATE KEY UPDATE SENTENCE=:sentence';
 
         $stmt = $pdo->prepare($sql); // Préparation d'une requête
     		$stmt->bindValue('sentence', $sentence->getSentence(), PDO::PARAM_STR);

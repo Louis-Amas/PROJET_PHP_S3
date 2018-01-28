@@ -77,7 +77,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="<?php echo $path ?>" method="post">
+        <div class="alert alert-warning"> <strong> Note: </strong> Editing the 'basic' language can break the site! Please do not edit it if you don't know what are you doing !</div>
+        <form action="<?php echo $path ?>" method="post" id='form'>
           <div class="form-group d-none">
             <label for="staticEmail" class="col-sm-2 col-form-label">Sentence ID</label>
             <div class="col-sm-10">
@@ -97,6 +98,7 @@
             <textarea name="SENTENCE" class="form-control" id="theSentence" rows="3"></textarea>
           </div>
           <button type="summit" class="btn btn-primary">Add</button>
+          <button type="reset" class="btn btn-primary">Reset</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -107,7 +109,7 @@
 </div>
 
 <script>
-$('#addTranslation').on('show.bs.modal', function (event) {
+$('#addTranslation').on('shown.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
   var recipient = button.data('id') // Extract info from data-* attributes
   var lang = button.data('lang');
@@ -117,7 +119,10 @@ $('#addTranslation').on('show.bs.modal', function (event) {
   modal.find('.modal-body input').val(recipient)
   modal.find('#LANGSELECT').val(lang)
   modal.find('.badge').text('ID: '+recipient)
+
 })
+
+
 </script>
 
 
