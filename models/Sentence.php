@@ -212,4 +212,5 @@
   	    public function __toString(){
         	return $this->sentence;
         }
+    }
 ?>

@@ -36,24 +36,42 @@ class TranslatorController {
     require 'views/translator/translator.php';
   }
 
+  public function showUserTranslation() {
+    $list = ToTranslate::findByUserId($_SESSION['USER']['id']);
+    require 'views/translator/showUserTranslation.php';
+  }
+  /*
+   *   Affiche la vue de demande de traduction
+   *  
+   * 
+   * 
+   */
   public function askForTranslate() {
+    Util::must_connected('/?controller=user&action=loginPage');
+    Util::can_access('PRE');
     $path = $this::$path . 'askForTranslateAction';
     $langs = Lang::findAllUsable();
-    require 'views/translator/addTranslate.php';
+    require 'views/translator/askTranslate.php';
   }
-
+  /*
+   * Action de la vue demande de traduction verifier les données.
+   * 
+   */
   public function askForTranslateAction() {
+    Util::must_connected('/?controller=user&action=loginPage');
+    Util::can_acces('PRE');
     $langS    = filter_input(INPUT_POST, 'LANGS');
     $langD    = filter_input(INPUT_POST, 'LANGD');
     $sentence = filter_input(INPUT_POST, 'SENTENCE');
-    $sentence = Sentence::findBySentenceAndLang($sentence, $lang);
-    if ($sentence === null) {
-      //ajouter une nouvelle sentence
-      //ajouter dans to translate
-
+    $result   = ToTranslate::findByLangDLangSAndSentence($sentence, $langS, $langD);
+    if ($result === null) {
+      $result   = ToTranslate::insert($sentence, $_SESSION['USER']['id'],  $langS, $langD);
+      new Alert('success', 'ASK_TRANSLATE_OK');
+      Util::redirect_to($this::$path . 'translator');
     }
     else {
-      //ajouter dans to translate à l'id correspondant à sentence
+      new Alert('danger', 'ASK_TRANSLATE_BAD'); 
+      Util::redirect_to($this::$path . 'askForTranslate');
     }
   }
 
