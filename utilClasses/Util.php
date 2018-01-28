@@ -54,19 +54,22 @@ class Util{
     }
   }
 
-  public static function load_lang($url) {
+  public static function load_lang($langCode) {
     // Lire le fichier json
-    $json = file_get_contents($url);
+   $allInternal = Sentence::findAllInternal();
+   $listSentencesByID = array();
+   foreach ($allInternal as $key => $value) {
+     if($value->getLang()=='basic' || $value->getLang()==$langCode){
+       $listSentencesByID[$value->getId()][$value->getLang()] = $value->getSentence();
+     }
+   }
 
-    // Transformer json en Array php
-    $json_data = json_decode($json, true);
-    $array = $json_data['lang'];
-    $lang;
-    foreach ($array as $value) {
-      foreach ($value as $key => $val) {
-        $lang[$key] = $val;
-      }
-    }
+   $lang =array();
+   foreach ($listSentencesByID as $key => $value) {
+     $internal = $value['basic'];
+     $translated = $value[$langCode];
+     $lang[$internal] = $translated;
+   }
     return $lang;
   }
 }

@@ -4,6 +4,14 @@ require 'controllers/UserController.php';
 require 'controllers/PageController.php';
 require 'controllers/SentenceController.php';
 require 'controllers/TranslatorController.php';
+function text($text){
+  if ($lang[$text]){
+    return $lang[$text];
+  } else {
+    return 'UNKNOWN STRING: '.$text;
+  }
+}
+
 class App {
     /*
      * Correspond à la base de l'application les routes

@@ -42,23 +42,23 @@ class UserController {
       exit;
     }
     if ($user == null) {
-      new Alert('danger',$lang['ERROR_WRONG_USERNAME']);
+      new Alert('danger',text('ERROR_WRONG_USERNAME'));
       Util::redirect_to($this::$path . 'loginPage');
     }
     else {
       if (!$user->isActivated()){
-        new Alert('danger', 'This account is not activated please check out your emails');
+        new Alert('danger', text('ERROR_NOT_ACTIVATED'));
         Util::redirect_to('/');
       }
       elseif ($user->verifyPassword($password)) {
         $_SESSION['USER']['id'] = $user->getId();
         $_SESSION['USER']['username'] = $user->getUsername();
         $_SESSION['USER']['rights'] = $user->getType();
-        new Alert('success', $lang['WELCOME'] . ' ' . $user->getUsername());
+        new Alert('success', text('WELCOME') . ' ' . $user->getUsername());
         Util::redirect_to('/');
       }
       else {
-        new Alert('danger', $lang['ERROR_WRONG_PASSWORD']);
+        new Alert('danger', text('ERROR_WRONG_PASSWORD'));
         Util::redirect_to($this::$path . 'loginPage');
       }
     }
@@ -132,15 +132,15 @@ class UserController {
     $captchaValidation = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=6LeTWUAUAAAAAMCWwcOelu8Wc3kxrnnBmUR1B3p9&response='.$captcha);
     $responseKeys=json_decode($captchaValidation,true);
     if ($password != $confPassword) {
-      new Alert('danger', $lang['PASS_DOESNT_MATCH']);
+      new Alert('danger', text('PASS_DOESNT_MATCH'));
       Util::redirect_to($this::$path . 'create');
     }
     elseif (strlen($choosenname) > 32) {
-      new Alert('danger',$lang['BAD_INSCRIPTION'].': Username too long');
+      new Alert('danger',text('BAD_INSCRIPTION').': '.text('USERNAME_TOO_LONG'));
       Util::redirect_to(self::$path.'create');
     }
     elseif (array_search(null,$_POST)) {
-      new Alert('danger', $lang['BAD_INSCRIPTION'] . ': Please fill all the fields');
+      new Alert('danger', text('BAD_INSCRIPTION') . ': '.text('ERROR_NOT_FULL_FORM'));
       Util::redirect_to($this::$path . 'create');
     }
     else if (User::insert($user)) {
