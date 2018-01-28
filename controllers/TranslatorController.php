@@ -37,7 +37,10 @@ class TranslatorController {
   }
 
   public function showUserTranslation() {
-    $list = ToTranslate::findByUserId($_SESSION['USER']['id']);
+    $listAsk = ToTranslate::findByUserId($_SESSION['USER']['id']);
+    if(Util::can_acces('TRA')){
+      $listAll = ToTranslate::findAll();
+    }
     require 'views/translator/showUserTranslation.php';
   }
   /*

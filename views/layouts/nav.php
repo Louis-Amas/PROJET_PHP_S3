@@ -4,20 +4,40 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <?php
-                    foreach ($lang['MENU'] as $value) {
-                        foreach ($value as $key => $val) {
-                        echo '<li class="nav-item">
-                                <a class="nav-link" href="'. $val . '">
-                                ' . $key. '
-                                </a>
-                             </li>';
-                        }
-                    }
-                ?>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <?php echo $lang['HOME']?>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/?controller=translator">
+                <?php echo $lang['MENU_TRANSLATE']?>
+              </a>
+            </li>
+            <?php if (Util::can_acces('ADM')) { ?>
+              <li class="nav-item">
+                <a class="nav-link" href="/?controller=user">
+                  <?php echo $lang['MENU_ADMINPANEL'];?>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if (Util::can_acces('ADM')) { ?>
+              <li class="nav-item">
+                <a class="nav-link" href="/?controller=sentence">
+                  <?php echo $lang['MENU_TRANSLATORPANEL'];?>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if (Util::can_acces('PRE')) {  ?>
+              <li class="nav-item">
+                <a class="nav-link" href="/?controller=translator&action=showUserTranslation">
+                  <?php echo $lang['MENU_USERASK'];?>
+                </a>
+              </li>
+            <?php } ?>
 
-            </ul>
+          </ul>
 
             <span class="navbar-text">
             <?php
@@ -45,11 +65,11 @@
                     <div class="dropdown-menu">
                         <a href="/?controller=user&action=show&id=<?php echo $id ?>"
                         class="dropdown-item text-dark" role="button" aria-pressed="true">
-                            <?php echo 'My Profile' ?>
+                            <?php echo $lang['MY_PROFILE'] ?>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-dark" href="/?controller=user&action=unlogin">
-                        <?php echo 'Log-Out' ?>
+                        <?php echo $lang['LOGOUT'] ?>
                         </a>
                     </div>
                 </div>

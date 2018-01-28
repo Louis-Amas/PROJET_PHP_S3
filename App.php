@@ -4,7 +4,11 @@ require 'controllers/UserController.php';
 require 'controllers/PageController.php';
 require 'controllers/SentenceController.php';
 require 'controllers/TranslatorController.php';
+
+
 function text($text){
+  if(empty($lang))
+    $lang = Util::load_lang('fr.FR');
   if ($lang[$text]){
     return $lang[$text];
   } else {
