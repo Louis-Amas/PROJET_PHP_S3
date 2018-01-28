@@ -10,26 +10,21 @@ class TranslatorController {
   public function index() {
       $this->translator();
   }
-
+  /*
+   *   Affiche la vue de traduction
+   *
+   */
   public function translator(){
     $path= $this::$path . 'translatorResult';
     $langs = Lang::findAllUsable();
 
     require 'views/translator/translator.php';
   }
-
+  /*
+   *   Affiche le resultat de la traduction dans la vue de traduction
+   *
+   */
   public function translatorResult(){
-    if (!Util::can_acces('NOR')){
-      if(!empty($_SESSION['NEXTTRAD'])){
-        if ($_SESSION['NEXTTRAD'] > new DateTime()){
-          new Alert('danger',text('10_MINUTES_WAIT'));
-          Util::redirect_to('/');
-        }
-      }
-      $dateEnd = new DateTime();
-      $dateEnd->add(new DateInterval('PT10M'));
-      $_SESSION['NEXTTRAD'] = $dateEnd ;
-    }
     $sentenceS =filter_input(INPUT_POST, 'SENTENCE');
     $langs = Lang::findAllUsable();
     $langS =filter_input(INPUT_POST, 'LANGS');
@@ -42,13 +37,13 @@ class TranslatorController {
     if (!is_null($origin)){
       $translated = $origin->findTranslation($langT);
     }
-    //var_dump($translated);
-    //die;
     require 'views/translator/translator.php';
   }
 
   public function showUserTranslation() {
-    Util::must_connected('/','PRE');
+    if(Util::can_acces('TRA')){
+      var_dump($_POST);
+    }
     $listLangs = Lang::findAll();
     $listAsk = ToTranslate::findByUserId($_SESSION['USER']['id']);
     if(Util::can_acces('TRA')){
@@ -58,8 +53,6 @@ class TranslatorController {
   }
   /*
    *   Affiche la vue de demande de traduction
-   *
-   *
    *
    */
   public function askForTranslate() {

@@ -52,7 +52,7 @@ class User {
   }
   public function verifyPassword($password) {
     if ($this->password == hash('sha256', $password . $this->salt ))
-    return true;
+      return true;
     return false;
   }
 
@@ -66,7 +66,10 @@ class User {
   public function show() {
     return $this->id . ' ' . $this->username;
   }
-
+  /*
+   *   renvoie la liste de tout les utilisateurs avec un compte activé
+   *
+   */
   public static function findAllActivated(){
     $pdo = MyPdo::getConnection();
     $sql = 'SELECT *  FROM USER WHERE TYPE IS NOT NULL';
@@ -92,7 +95,10 @@ class User {
     }
     return $all;
   }
-
+  /*
+   *   renvoie la liste de tout les utilisateurs
+   *
+   */
   public static function findAll() {
     $pdo = MyPdo::getConnection();
     $sql = 'SELECT *  FROM USER';
@@ -120,7 +126,10 @@ class User {
     }
     return $all;
   }
-
+  /*
+   *   renvoie l'utilisateur qui correspond à l'ID passé en paramètre
+   *
+   */
   public static function findById($id) {
     $pdo = MyPdo::getConnection();
     $sql = 'SELECT *  FROM USER WHERE USER_ID = :id';
@@ -149,7 +158,10 @@ class User {
       exit();
     }
   }
-
+  /*
+   *   renvoie l'utilisateur avec le nom passé en paramètre
+   *
+   */
   public static function findByUsername($username) {
     $pdo = MyPdo::getConnection();
     $sql = 'SELECT *  FROM USER WHERE USERNAME = :username';
@@ -177,7 +189,10 @@ class User {
       exit();
     }
   }
-
+  /*
+   *   renvoie l'utilisateur qui correspond à l'email passé en paramètre
+   *
+   */
   public static function findByEmail($email) {
     $pdo = MyPdo::getConnection();
     $sql = 'SELECT *  FROM USER WHERE EMAIL = :email';
@@ -205,7 +220,10 @@ class User {
       exit();
     }
   }
-
+  /*
+   *   active un compte suite à la validation par email 
+   *
+   */
   public function activate() {
     $pdo = MyPdo::getConnection();
     $query = 'UPDATE USER SET TYPE = "NOR" WHERE USER_ID = :id';
@@ -220,7 +238,10 @@ class User {
       Util::redirect_to('/');
     }
   }
-
+  /*
+   *   ajoute un nouvel utilisateur
+   *
+   */
   public static function insert($user) {
 
     if (self::findByUsername($user->username) != null)
@@ -255,7 +276,10 @@ class User {
       exit();
     }
   }
-
+  /*
+   *   met à jour les infos d'un utilisateur
+   *
+   */
   public static function update($user, $mode = 0) {
     var_dump($user->password);
     $sql =   'UPDATE USER
