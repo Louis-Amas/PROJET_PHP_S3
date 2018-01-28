@@ -17,7 +17,11 @@
             $this->status      = $result->STATUS;
             $this->author      = $result->AUTHOR_ID; 
         }
-        
+
+        public function __toString(){
+        	return $this->sentence . ' in ' .  $this->langs . ' to ' . $this->langd;
+        }
+
         public static function findByLangDLangSAndSentence($sentence, $langs, $langd) {
             $pdo = MyPdo::getConnection();
             $sql = 'SELECT *  FROM TOTRANSLATE WHERE LANGD = :langd AND LANGS = :langs 
@@ -48,7 +52,7 @@
 
         public static function findByUserId($userId) {
             $pdo = MyPdo::getConnection();
-            $sql = 'SELECT *  FROM TOTRANSLATE WHERE AUTHOR = :id';
+            $sql = 'SELECT *  FROM TOTRANSLATE WHERE AUTHOR_ID = :id';
             $stmt = $pdo->prepare($sql); // Préparation d'une requête.
             $stmt->bindValue('id', $userId, PDO::PARAM_INT); // Lie les paramètres de manière sécurisée.
             try
