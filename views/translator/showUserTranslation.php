@@ -1,6 +1,6 @@
 <?php var_dump($list) ?>
 <?php if ($list === null ) {
-    echo 'NO_TRANSLATE';
+	echo text('NO_TRANSLATION');
 } ?>
 <ul class="list-group">
 
