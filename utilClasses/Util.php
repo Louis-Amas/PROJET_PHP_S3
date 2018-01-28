@@ -21,7 +21,7 @@ class Util{
   }
 
   public static function can_acces($rights){
-    if (empty($_SESSION) && $rights != null) {
+    if (empty($_SESSION['USER']) && $rights != null) {
       return false;
     }
     if ($rights != $_SESSION['USER']['rights']){

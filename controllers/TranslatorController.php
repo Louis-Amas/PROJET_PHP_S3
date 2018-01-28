@@ -19,6 +19,17 @@ class TranslatorController {
   }
 
   public function translatorResult(){
+    if (!Util::can_acces('NOR')){
+      if(!empty($_SESSION['NEXTTRAD'])){
+        if ($_SESSION['NEXTTRAD'] > new DateTime()){
+          new Alert('danger',text('10_MINUTES_WAIT'));
+          Util::redirect_to('/');
+        }
+      }
+      $dateEnd = new DateTime();
+      $dateEnd->add(new DateInterval('PT10M'));
+      $_SESSION['NEXTTRAD'] = $dateEnd ;
+    }
     $sentenceS =filter_input(INPUT_POST, 'SENTENCE');
     $langs = Lang::findAllUsable();
     $langS =filter_input(INPUT_POST, 'LANGS');
@@ -37,9 +48,7 @@ class TranslatorController {
   }
 
   public function showUserTranslation() {
-    if(Util::can_acces('TRA')){
-      var_dump($_POST);
-    }
+    Util::must_connected('TRA');
     $listLangs = Lang::findAll();
     $listAsk = ToTranslate::findByUserId($_SESSION['USER']['id']);
     if(Util::can_acces('TRA')){
