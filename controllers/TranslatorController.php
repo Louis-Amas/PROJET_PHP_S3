@@ -17,7 +17,7 @@ class TranslatorController {
 
     require 'views/translator/translator.php';
   }
-
+ 
   public function translatorResult(){
     if (!Util::can_acces('NOR')){
       if(!empty($_SESSION['NEXTTRAD'])){
