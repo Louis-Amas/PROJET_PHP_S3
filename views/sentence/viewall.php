@@ -12,7 +12,7 @@
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="true" name='ONLYBASIC' id="defaultCheck1">
       <label class="form-check-label" for="defaultCheck1">
-        <?php echo text('SEE_ONLY_BASIC_SETNENCES_(INTERNAL_TRANSLATION)') ?>
+        <?php echo text('SEE_ONLY_BASIC_SENTENCES_(INTERNAL_TRANSLATION)') ?>
       </label>
     </div>
     <div class="form-group">
