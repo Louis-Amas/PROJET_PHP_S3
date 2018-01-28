@@ -1,16 +1,8 @@
 <?php
 class Util{
-  /*
-   *   Redirige vers la page passé en parametre
-   *
-   */
   public static function redirect_to($url){
     header('Location: ' . $url);
   }
-  /*
-   *   renvoie un string aléatoire
-   *
-   */
   public static function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'){
     $str = '';
     $max = mb_strlen($keyspace, '8bit') - 1;
@@ -19,10 +11,7 @@ class Util{
     }
     return $str;
   }
-  /*
-   *   ramène à la page précédente
-   *
-   */
+
   public static function back(){
     ?>
     <script>
@@ -30,12 +19,9 @@ class Util{
     </script>
     <?php
   }
-  /*
-   *   return true si l'utilisateur actuel peut accéder à la page en fonction de ses droits
-   *
-   */
+
   public static function can_acces($rights){
-    if (empty($_SESSION) && $rights != null) {
+    if (empty($_SESSION['USER']) && $rights != null) {
       return false;
     }
     if ($rights != $_SESSION['USER']['rights']){
@@ -51,20 +37,12 @@ class Util{
     }
     return true;
   }
-  /*
-   *   Empeche l'accès à une page pour un utilisateur n'ayant pas les droits suffisant
-   *
-   */
   public static function must_be_user($id){
     if ($_SESSION['USER']['rights'] != 'ADM' && $_SESSION['USER']['id'] != $id){
       new Alert('danger','You cannot acces to this page');
       Util::redirect_to('index.php');
     }
   }
-  /*
-   *   Empeche l'accès à une page pour une personne qui n'est pas connecté
-   *
-   */
   public static function must_connected($path = 'index.php', $rights = 'NOR'){
     if (empty($_SESSION)){
       new Alert('danger','You must be connected in order to access this page');
@@ -75,10 +53,7 @@ class Util{
       self::redirect_to($path);
     }
   }
-  /*
-   *   charge la langue sélectionné
-   *
-   */
+
   public static function load_lang($langCode) {
     // Lire le fichier json
    $allInternal = Sentence::findAllInternal();

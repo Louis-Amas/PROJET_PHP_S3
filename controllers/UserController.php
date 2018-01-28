@@ -13,26 +13,14 @@ class UserController {
     $path = $this::$path . 'show&id=';
     require 'views/user/index.php';
   }
-  /*
-   *accès à la page de login
-   *
-   */
   public function loginPage() {
     $path = $this::$path . 'login';
     require 'views/user/loginPage.php';
   }
-  /*
-   *accès à la page d'oublie de mot de passe
-   *
-   */
   public function forgotPassword(){
     $path = $this::$path . 'forgot';
     require 'views/user/forgotPassword.php';
   }
-  /*
-   *envoie d'un mail pour le mot de passe oublié
-   *
-   */
   public function forgot()
   {
     $email = filter_input(INPUT_POST,'EMAIL');
@@ -40,18 +28,10 @@ class UserController {
     new Alert('success','An email as just been sent to '.$email);
     Util::redirect_to('/');
   }
-  /*
-   *déconnecte et ramène à la page d'accueil
-   *
-   */
   public function unlogin() {
     unset($_SESSION['USER']);
     Util::redirect_to('/');
   }
-  /*
-   *accès à la page de connexion
-   *
-   */
   public function login() {
     global $lang;
     $username = filter_input(INPUT_POST, 'USERNAME');
@@ -83,18 +63,10 @@ class UserController {
       }
     }
   }
-  /*
-   *accès à la page de création d'utilisateur
-   *
-   */
   public function create() {
     $path = $this::$path . 'createAction';
     require 'views/user/create.php';
   }
-  /*
-   *accès à la page d'utilisateur
-   *
-   */
   public function show() {
     $id = filter_input(INPUT_GET, 'id');
     Util::must_be_user($id);
@@ -105,10 +77,6 @@ class UserController {
     $path = $this::$path . 'edit&id=' . $id;
     require 'views/user/show.php';
   }
-  /*
-   *accès à la page de reset de mot de passe
-   *
-   */
   public function reset() {
     $email = filter_input(INPUT_GET, 'email');
     $salt = filter_input(INPUT_GET,'salt');
@@ -129,10 +97,6 @@ class UserController {
     self::index();
     require 'views/user/reset.php';
   }
-  /*
-   *accès à la page de modification des info de l'utilisateur
-   *
-   */
   public function edit() {
     $id = filter_input(INPUT_GET, 'id');
     Util::must_be_user($id);
@@ -143,10 +107,6 @@ class UserController {
     self::index();
     require 'views/user/edit.php';
   }
-  /*
-   *activation du compte qui se fait par un lien reçu par email
-   *
-   */
   public function activateaccount(){
     $email = filter_input(INPUT_GET,'email');
     $salt = filter_input(INPUT_GET,'salt');
@@ -160,10 +120,7 @@ class UserController {
       Util::redirect_to('/');
     }
   }
-  /*
-   *ajout d'un utilisateur ou renvoie d'une alert si une paramètre n'est pas bon
-   *
-   */
+
   public function createAction() {
     global $lang;
     $password =filter_input(INPUT_POST, 'PASSWORD');
@@ -197,17 +154,10 @@ class UserController {
       Util::redirect_to($this::$path . 'create' );
     }
   }
-  /*
-   *reset le mot de passe
-   *
-   */
+
   public function reseting(){
     self::update(true);
   }
-  /*
-   *mise à jour des information d'un utilisateur
-   *
-   */
   public function update($reseting=false) {
     global $lang;
     $id = filter_input(INPUT_GET, 'id');

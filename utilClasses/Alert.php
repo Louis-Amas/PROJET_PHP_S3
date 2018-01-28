@@ -11,10 +11,7 @@ class Alert{
     }
     $_SESSION['alerts'][$type] = $message;
   }
-  /*
-   *   Affiche une alert
-   *
-   */
+
   public static function show_alert() {
     if ($_SESSION['alerts']) {
       foreach ($_SESSION['alerts'] as $key => $value) {

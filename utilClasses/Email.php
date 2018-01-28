@@ -8,17 +8,10 @@ class Email {
     $this->message = $message;
     $this->subject=$subject;
   }
-  /*
-   *   Envoie d'un mail
-   *
-   */
   public function send(){
     return mail($this->destination,$this->subject,$this->message);
   }
-  /*
-   *   Envoie de l'email de confiramtion d'inscription
-   *
-   */
+
   public static function send_confirmation_email($email) {
     $user = User::findByEmail($email);
     $message = 'Hello, Thanks for your registration please click here to activate your account: '.
@@ -30,10 +23,6 @@ class Email {
         Util::redirect_to('/');
       }
   }
-  /*
-   *   Envoie de l'email de reset de mot de passe
-   *
-   */
   public static function send_reset_email($email){
     $user = User::findByEmail($email);
     if (!is_null($user)){
