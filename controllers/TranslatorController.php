@@ -48,7 +48,7 @@ class TranslatorController {
   }
 
   public function showUserTranslation() {
-    Util::must_connected('TRA');
+    Util::must_connected('/','PRE');
     $listLangs = Lang::findAll();
     $listAsk = ToTranslate::findByUserId($_SESSION['USER']['id']);
     if(Util::can_acces('TRA')){
