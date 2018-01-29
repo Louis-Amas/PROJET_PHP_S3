@@ -17,7 +17,7 @@ class TranslatorController {
 
     require 'views/translator/translator.php';
   }
- 
+
   public function translatorResult(){
     if (!Util::can_acces('NOR')){
       if(!empty($_SESSION['NEXTTRAD'])){
@@ -53,6 +53,52 @@ class TranslatorController {
     $listAsk = ToTranslate::findByUserId($_SESSION['USER']['id']);
     if(Util::can_acces('TRA')){
       $listAll = ToTranslate::findAll();
+    }
+    if(!empty($_POST)){
+      $sentenceFrom = filter_input(INPUT_POST,'SENTENCEFROM');
+      $sentenceTo = filter_input(INPUT_POST,'SENTENCETO');
+      $langFrom= filter_input(INPUT_POST,'langFrom');
+      $langTo= filter_input(INPUT_POST,'langTo');
+      $newSentence1 = Sentence::findBySentenceAndLang($sentenceFrom,$langFrom);
+      $newSentence2 = Sentence::findBySentenceAndLang($sentenceTo,$langTo);
+      $askID = filter_input(INPUT_POST,'askID');
+      if (!$newSentence1 && !$newSentence2){
+        $newSentence1 = new Sentence(null);
+        $newSentence1->setSentence($sentenceFrom);
+        $newSentence1->setLang($langFrom);
+        if (Sentence::insertNew($newSentence1)) {
+          $newSentence1 = Sentence::findBySentenceAndLang($sentenceFrom,$langFrom);
+          $newSentence2 = new Sentence(null);
+          $newSentence2->setSentence($sentenceTo);
+          $newSentence2->setLang($langTo);
+          $newSentence2->setID($newSentence1->getID());
+          Sentence::insertOrUpdateAccordingID($newSentence2);
+        }
+
+      } elseif ($newSentence1 && !$newSentence2 ) {
+        $newSentence2 = new Sentence(null);
+        $newSentence2->setSentence($sentenceTo);
+        $newSentence2->setLang($langTo);
+        $newSentence2->setID($newSentence1->getID());
+        Sentence::insertOrUpdateAccordingID($newSentence2);
+      } elseif (!$newSentence1 && $newSentence2 ) {
+        $newSentence1 = new Sentence(null);
+        $newSentence1->setSentence($sentenceFrom);
+        $newSentence1->setLang($langFrom);
+        $newSentence1->setID($newSentence2->getID());
+        Sentence::insertOrUpdateAccordingID($newSentence1);
+      } else {
+          new Alert('success',"Translation already exist !");
+          $totranslate = ToTranslate::findById($askID);
+          if(!empty($totranslate))
+            $totranslate->updateStatus('DENIED');
+          Util::back();
+          return;
+      }
+      $totranslate = ToTranslate::findById($askID);
+      if(!empty($totranslate))
+        $totranslate->updateStatus('ACCEPTED');
+      Util::back();
     }
     require 'views/translator/showUserTranslation.php';
   }

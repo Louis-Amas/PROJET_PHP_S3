@@ -78,6 +78,34 @@
             }
         }
 
+        public static function findById($Id) {
+            $pdo = MyPdo::getConnection();
+            $sql = 'SELECT *  FROM TOTRANSLATE WHERE TOTRANSLATE_ID = :id';
+            $stmt = $pdo->prepare($sql); // Préparation d'une requête.
+            $stmt->bindValue('id', $Id, PDO::PARAM_INT); // Lie les paramètres de manière sécurisée.
+            try
+            {
+                $stmt->execute(); // Exécution de la requête.
+                if ($stmt->rowCount() == 0) {
+                    return null;
+                }
+                $stmt->setFetchMode(PDO::FETCH_OBJ);
+                $return = array();
+                while ($result = $stmt->fetch())
+                {
+                    $return = new ToTranslate($result);
+                }
+                return $return;
+            }
+            catch (PDOException $e)
+            {
+                // Affichage de l'erreur et rappel de la requête.
+                echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+                echo 'Requête : ', $sql, PHP_EOL;
+                exit();
+            }
+        }
+
         public static function findAll() {
             $pdo = MyPdo::getConnection();
             $sql = 'SELECT *  FROM TOTRANSLATE';
@@ -124,6 +152,25 @@
                 echo 'Requête : ', $sql, PHP_EOL;
                 exit();
             }
+        }
+
+        public function updateStatus($new){
+          $pdo = MyPdo::getConnection();
+          $sql = 'UPDATE TOTRANSLATE SET STATUS = :new WHERE TOTRANSLATE_ID = :id';
+          $stmt = $pdo->prepare($sql);
+          $parameters =  array(':id' => $this->id, ':new' => $new );
+          try {
+              $stmt->execute($parameters);
+              return true;
+
+          } catch (PDOException $e) {
+              //A supprimer en développement
+              //return false;
+              // Affichage de l'erreur et rappel de la requête.
+              echo 'Erreur : ', $e->getMessage(), PHP_EOL;
+              echo 'Requête : ', $sql, PHP_EOL;
+              exit();
+          }
         }
 
     /**

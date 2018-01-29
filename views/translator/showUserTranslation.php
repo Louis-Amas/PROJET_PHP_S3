@@ -41,10 +41,12 @@
   </thead>
   <tbody>
     <?
-    foreach ($listAll as $key => $value) { ?>
+    foreach ($listAll as $key => $value) {
+    if ($value->getStatus() == 'WAITING'){
+    ?>
     <tr>
       <th scope="row"><? echo $value->getId() ?>
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#addSentence" data-langOr="<? echo $value->getLangs() ?>" data-langDest="<? echo $value->getLangd() ?>"> <? echo text('ADD_A_NEW_SENTENCE') ?></button>
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#addSentence" data-askid="<?echo $value->getId() ?>" data-thesentence= "<?echo $value->getSentence() ?>" data-langor="<? echo $value->getLangs() ?>" data-langdest="<? echo $value->getLangd() ?>"> <? echo text('ADD_A_NEW_SENTENCE') ?></button>
       </th>
       <td><? echo User::findById($value->getAuthor())->getUsername() ?></td>
       <td><? echo $value->getSentence() ?></td>
@@ -52,7 +54,7 @@
       <td><? echo Lang::findByAcro($value->getLangd())->getName()?></td>
       <td><? echo $value->getStatus()?></td>
     </tr>
-  <? } ?>
+  <? }} ?>
   </tbody>
 </table>
 
@@ -68,15 +70,17 @@
         </button>
       </div>
       <div class="modal-body">
-        <p class="text-danger"><?php echo text('WARNING_ADDING_TRAD') ?></p>
+        <p class="text-danger"><?php echo text('INFO_ASK') ?></p>
         <form action="#" method="post">
+          <input class="form-control" type="text" id='askID' name=askID value="<?php echo text('LANG_FROM') ?>" readonly>
+
           <div class="form-group">
-            <input readonly id='langFrom' name=langFrom value="<?php echo text('LANG_FROM') ?>"> </input>
-            <textarea name="SENTENCE" class="form-control" id="theSentence" rows="3"></textarea>
+            <input class="form-control" type="text" id='langFrom' name=langFrom value="<?php echo text('LANG_FROM') ?>" readonly>
+            <textarea name="SENTENCEFROM" class="form-control" id="theSentence" rows="3"></textarea>
           </div>
           <div class="form-group">
-            <input readonly id='langTo' name=langTo value="<?php echo text('LANG_ASKED') ?>" ></input>
-            <textarea name="SENTENCE" class="form-control" id="theSentence" rows="3"></textarea>
+            <input class="form-control" type="text" id='langTo' name=langTo value="<?php echo text('LANG_ASKED') ?>" readonly>
+            <textarea name="SENTENCETO" class="form-control" id="theSentence" rows="3"></textarea>
           </div>
 
           <button type="summit" class="btn btn-primary"><?php echo text('ADD') ?></button>
@@ -94,14 +98,17 @@ $('#addSentence').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
 
   var recipient = button.data('id') // Extract info from data-* attributes
-  var langTO = button.data('langDest');
-  var langFROM = button.data('langOr');
-  alert(langFROM)
+  var langTO = button.data('langdest');
+  var langFROM = button.data('langor');
+  var theSentence=button.data('thesentence')
+  var theID = button.data('askid')
   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
   // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
   var modal = $(this)
   modal.find('#langFrom').val(langFROM)
   modal.find('#langTo').val(langTO)
+  modal.find('#theSentence').text(theSentence)
+  modal.find('#askID').val(theID)
 })
 </script>
 <? } ?>
