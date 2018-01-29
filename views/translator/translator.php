@@ -28,3 +28,29 @@
     </div>
   </div>
 </form>
+
+<? if ($showModal) {?>
+<div class="modal" id="premiumAsk" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> <? echo text('USER_ASK')?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><? echo text('USER_ASK_INFO')?>.</p>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary" href="/?controller=translator&action=askForTranslate" role="button"><? echo text('APPLY')?></a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><? echo text('ABORT')?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#premiumAsk').modal('show');
+</script>
+<? } ?>

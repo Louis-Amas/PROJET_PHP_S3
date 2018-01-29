@@ -41,9 +41,9 @@ class TranslatorController {
     $translated = 'No result';
     if (!is_null($origin)){
       $translated = $origin->findTranslation($langT);
+    }elseif(Util::can_acces('PRE')){
+      $showModal = 'true';
     }
-    //var_dump($translated);
-    //die;
     require 'views/translator/translator.php';
   }
 
