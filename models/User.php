@@ -257,7 +257,6 @@ class User {
   }
 
   public static function update($user, $mode = 0) {
-    var_dump($user->password);
     $sql =   'UPDATE USER
               SET USERNAME = :username, EMAIL = :email, TYPE = :type
               WHERE USER_ID = :id';
@@ -274,7 +273,7 @@ class User {
     }
     $pdo = MyPdo::getConnection();
 
-    var_dump($user);
+
 
     $stmt = $pdo->prepare($sql); // Préparation d'une requête.
 

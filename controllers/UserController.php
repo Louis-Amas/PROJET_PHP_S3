@@ -193,7 +193,7 @@ class UserController {
           $_SESSION['USER']['username'] = $user->getUsername();
           $_SESSION['USER']['rights'] = $user->getType();
         }
-        new Alert('success', text('SUCCESSFULL_UPDATE'));
+        new Alert('success', text('UPDATE_SUCCESSFUL'));
         Util::redirect_to($this::$path . 'show&id='. $id);
       }
       elseif (empty($oldPassword)){
