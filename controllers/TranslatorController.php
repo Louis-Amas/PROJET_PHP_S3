@@ -128,11 +128,11 @@ class TranslatorController {
     $result   = ToTranslate::findByLangDLangSAndSentence($sentence, $langS, $langD);
     if ($result === null) {
       $result   = ToTranslate::insert($sentence, $_SESSION['USER']['id'],  $langS, $langD);
-      new Alert('success', 'ASK_TRANSLATE_OK');
+      new Alert('success', text('ASK_TRANSLATE_OK'));
       Util::redirect_to($this::$path . 'translator');
     }
     else {
-      new Alert('danger', 'ASK_TRANSLATE_BAD');
+      new Alert('danger', text('ASK_TRANSLATE_BAD'));
       Util::redirect_to($this::$path . 'askForTranslate');
     }
   }
